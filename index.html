@@ -1,0 +1,32 @@
+    <!doctype html>
+    <html ng-app="project">
+      <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js">
+       </script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
+        <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+        <script src="project.js"></script>
+        <script src="project-list.js"></script>
+          <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+          <script>
+              // Initialize the Firebase SDK
+              var config = {
+                  apiKey: "AIzaSyCcZc93bzW7SPyMO1hhloDm_VXCwhvDMaA",
+                  authDomain: "angularsandbox-640d4.firebaseapp.com",
+                  databaseURL: "https://angularsandbox-640d4.firebaseio.com",
+                  storageBucket: "angularsandbox-640d4.appspot.com",
+                  messagingSenderId: "1022780262419"
+              };
+              firebase.initializeApp(config);
+          </script>
+
+      </head>
+      <body>
+        <h2>JavaScript Projects</h2>
+
+        <!-- What is ng-view bringing in? How does it know what to do? -->
+        <div ng-view></div>
+      </body>
+    </html>

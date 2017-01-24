@@ -1,0 +1,14 @@
+{
+  "name": "sandbox",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "lite-server"
+  },
+  "engines": {
+    "node": "4.4.x"
+  },
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}
