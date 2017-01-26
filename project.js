@@ -3,43 +3,6 @@ angular.module('project', ['ngRoute', 'firebase'])
     .value('fbURL', 'https://angularsandbox-640d4.firebaseio.com/')
 
 
-    /*
-    .service('Projects', function($q, $firebaseObject, $firebaseArray, $firebaseAuth, projectListValue) {
-      var self = this;
-      this.fetch = function () {
-
-          // We may already have a this.projects (actual or promised), so return it if it does exist:
-          if (this.projects)
-              return $q.when(this.projects);
-
-          // Set up a promise.
-          var deferred = $q.defer();
-          var ref = firebase.database().ref('projects-fresh');
-
-          var $projects = $firebaseObject(ref);
-          $projects.$loaded()
-              .then(function() {
-                  console.log("FEW");
-              })
-
-          ref.on('value', function(snapshot) {
-            if (snapshot.val() === null) {
-              $projects.$set(projectListValue);
-            }
-            self.projects = $projects.$asArray();
-
-            deferred.resolve(self.projects);
-          });
-
-          //Remove projects list when no longer needed.
-          ref.onDisconnect().remove();
-          return deferred.promise;
-        });
-      };
-    })
-    */
-
-
     .config(function($routeProvider) {
 
         /*  var resolveProjects = {
@@ -63,7 +26,17 @@ angular.module('project', ['ngRoute', 'firebase'])
          do the actual fetching.
          */
         $routeProvider
-            .when('/', {
+
+            .when('/product_description/:productID', {
+                // The captured :productID will be sent to the controller via $routeParams
+                // Note that it is REQUIRED that you give an "as" alias to the controller class name!
+                // Will not work if you don't but not sure why.
+                controller: 'ReviewListController as reviewlistCTRLR',
+                templateUrl: 'review_list.html'
+
+            })
+
+            .when('/framework_list', {
                 controller: 'ProjectListController as projectList',
                 templateUrl: 'list.html'
                 // resolve: resolveProjects // ^^^^ see above comment
@@ -84,15 +57,38 @@ angular.module('project', ['ngRoute', 'firebase'])
     })
 
 
-    .controller('ProjectListControllerPreFetched', function(projects) {
-      var projectList = this;
-      projectList.projects = projects;
+
+    // This is a good "promissory" controller that does a firebase fetch and waits for
+    // the result before setting its this.projects which is being watched by the GUI.
+    .controller('ReviewListController',
+        function($firebaseObject, $routeParams, $firebaseArray) {
+        var ref = firebase.database().ref('reviewchunks').child($routeParams.productID);
+
+            // Now these next 4 lines are actually not necessary at all, but they show how
+            // you would handle obtaining the results here for processing before fulfilling
+            // the promise.
+            /*
+            ref.on("value", function(snapshot){
+                var heythere = snapshot.val();
+                var x = 3;
+            });*/
+
+        this.reviews = $firebaseArray(ref);
+        // <tr ng-repeat="review in ReviewListController.reviews | filter:projectList.search | orderBy:'name'">
     })
 
 
-    // DFSKLARD: my attempt at a controller that does a firebase fetch and thus must cope with a deferral.
+
+
+
+    // This is a good "promissory" controller that does a firebase fetch and waits for
+    // the result before setting its this.projects which is being watched by the GUI.
     .controller('ProjectListController', function($firebaseObject, $firebaseArray) {
-        var ref = firebase.database().ref();
+        var ref = firebase.database().ref('framework-db');
+
+        // Now these next 4 lines are actually not necessary at all, but they show how
+        // you would handle obtaining the results here for processing before fulfilling
+        // the promise.
         ref.on("value", function(snapshot){
            var heythere = snapshot.val();
            var x = 3;
@@ -103,6 +99,7 @@ angular.module('project', ['ngRoute', 'firebase'])
         // READ IT!!!
         var projectList = this;
         projectList.projects = $firebaseArray(ref);
+        // <tr ng-repeat="project in projectList.projects | filter:projectList.search | orderBy:'name'">
     })
 
 
