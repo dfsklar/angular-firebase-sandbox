@@ -6,7 +6,8 @@
 <table><tbody>
     <tr ng-repeat="review in reviewlistCTRLR.reviews">
         <td>{{review.author}} said:</td>
-        <td><rating-starstrip readonly="true"></rating-starstrip></td>
+        <!-- It does work!  saying value="{{...}}" does do the proper evaluation. -->
+        <td><rating-starstrip readonly="true" value="{{review.rating}}"></rating-starstrip></td>
     </tr>
 </tbody>
 </table>

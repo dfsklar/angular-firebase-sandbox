@@ -34,6 +34,9 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             '</li>' +
             '</ul>',
 
+
+        // In my case, the way I'm using this:  the controller is null.
+        // But I do need a value to be involved, right now it is hardwired within this.
         link: function(scope, element, attrs, controller) {
             // Settings
             scope.icons = new Array(+attrs.max || 5);
@@ -45,7 +48,7 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             scope.productId = attrs.productId;
 
             // Retrieve the actual rating to show, from the controller
-            scope.value = 2;  //scope.retrieve_value(attrs.productId);
+            scope.value = attrs.value;
 
             // Colors
             var colorBase = attrs.colorBase || 'black';
