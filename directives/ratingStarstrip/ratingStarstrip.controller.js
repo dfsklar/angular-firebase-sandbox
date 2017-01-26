@@ -7,6 +7,9 @@ angular.module('Sklangular').controller(
     // Also, $rootScope hopefully will give us the ability to get access to the product's ID (the root is hopefully the product page!)
     function($scope, $rootScope, authService, productReviewService, $log) {
 
+
+        /*
+
         $log.log('ENTERING RatingStarstripController');
         $log.log($scope);
         $log.log($rootScope);
@@ -20,18 +23,6 @@ angular.module('Sklangular').controller(
             });
 
 
-	    $scope.maxValue = 5;
-
-        /*
-        $scope.$watch('rating', function(newVal, oldVal){
-            $log.log('IN CONTROLLER: watch - rating called');
-            if(newVal)
-                $scope.update($scope.user, newVal, $scope.campaignCode);
-        });
-
-         $scope.user.uid
-        */
-
       $scope.retrieve_value = function(product_id) {
         console.log("RETRIEVE VALUE");
          console.log($scope.user.uid);
@@ -43,5 +34,6 @@ angular.module('Sklangular').controller(
             // The new value is now safely in:  $scope.value
             console.log($scope.value);
 	    }
+	    */
 
     });
