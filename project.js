@@ -1,4 +1,4 @@
-angular.module('project', ['ngRoute', 'firebase'])
+angular.module('Sklangular', ['ngRoute', 'firebase'])
 
     .value('fbURL', 'https://angularsandbox-640d4.firebaseio.com/')
 

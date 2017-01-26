@@ -1,11 +1,12 @@
 
-<p>HWELL
+<p>Product description for {{productID}}
 </p>
 
 
 <table><tbody>
     <tr ng-repeat="review in reviewlistCTRLR.reviews">
         <td>{{review.author}} said:</td>
+        <td><rating-starstrip readonly="true"></rating-starstrip></td>
     </tr>
 </tbody>
 </table>
