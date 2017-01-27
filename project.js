@@ -63,17 +63,14 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
     .controller('ReviewListController',
         function($scope, $firebaseObject, $routeParams, $firebaseArray) {
         var ref = firebase.database().ref('reviewchunks').child($routeParams.productID);
-
-            // Now these next 4 lines are actually not necessary at all, but they show how
-            // you would handle obtaining the results here for processing before fulfilling
-            // the promise.
-            /*
-            ref.on("value", function(snapshot){
-                var heythere = snapshot.val();
-                var x = 3;
-            });*/
-
         this.reviews = $firebaseArray(ref);
+
+        // These next lines will allow the template to refer to things such as {{productID}}
+        $scope.productID = $routeParams.productID;
+        $scope.writeableReview = {
+          comment: "Write your review here",
+            rating: 3
+        };
         $scope.reviews = this.reviews;
         // <tr ng-repeat="review in ReviewListController.reviews | filter:projectList.search | orderBy:'name'">
     })

@@ -5,11 +5,23 @@
 
 <table class="review-presentation">
     <tbody>
+
+    <!-- WRITEABLE "send in your own review" -->
+    <tr>
+        <td>Write your review!</td>
+        <td class="commentary">
+            <rating-starstrip ng-model='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
+            <textarea ng-model="writeableReview.comment"></textarea><br/>
+            {{writeableReview.comment}} <!-- This static text string proves the writeable is actually being modified! -->
+        </td>
+    </tr>
+
+
     <tr ng-repeat="review in reviewlistCTRLR.reviews">
         <td>Reviewed&nbsp;by<br/><b>{{review.author}}</b></td>
         <!-- It does work!  saying value="{{...}}" does do the proper evaluation. -->
         <td class="commentary"><!-- {{review.rating}} --><!-- THIS PROVES THE MODEL IS BEING MODIFIED! -->
-            <rating-starstrip notreadonly ng-model='review.rating' value="{{review.rating}}"></rating-starstrip>
+            <rating-starstrip readonly ng-model='review.rating' value="{{review.rating}}"></rating-starstrip>
             <p>{{review.comment}}</p>
         </td>
     </tr>
