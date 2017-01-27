@@ -1,0 +1,17 @@
+
+td {
+    padding-left: 8px;
+    padding-right: 9px;
+    padding-top: 9px;
+    vertical-align: top;
+    border-bottom: 1px solid grey;
+}
+
+.commentary {
+    font-style: italic;
+}
+
+.review-presentation {
+    width: 400px;
+}
+
