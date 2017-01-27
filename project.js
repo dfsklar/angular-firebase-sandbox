@@ -61,7 +61,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function($firebaseObject, $routeParams, $firebaseArray) {
+        function($scope, $firebaseObject, $routeParams, $firebaseArray) {
         var ref = firebase.database().ref('reviewchunks').child($routeParams.productID);
 
             // Now these next 4 lines are actually not necessary at all, but they show how
@@ -74,6 +74,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             });*/
 
         this.reviews = $firebaseArray(ref);
+        $scope.reviews = this.reviews;
         // <tr ng-repeat="review in ReviewListController.reviews | filter:projectList.search | orderBy:'name'">
     })
 

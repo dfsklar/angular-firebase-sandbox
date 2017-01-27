@@ -3,11 +3,13 @@
 </p>
 
 
-<table><tbody>
+<table>
+    <tbody>
     <tr ng-repeat="review in reviewlistCTRLR.reviews">
         <td>{{review.author}} said:</td>
         <!-- It does work!  saying value="{{...}}" does do the proper evaluation. -->
-        <td><rating-starstrip readonly="true" value="{{review.rating}}"></rating-starstrip></td>
+        <td>{{review.rating}}
+            <rating-starstrip notreadonly ng-model='review.rating' value="{{review.rating}}" on-change="respond_to_change()"></rating-starstrip></td>
     </tr>
 </tbody>
 </table>
