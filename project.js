@@ -76,6 +76,13 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             };
             $scope.reviews = this.reviews;
             // <tr ng-repeat="review in ReviewListController.reviews | filter:projectList.search | orderBy:'name'">
+
+            // HANDLERS
+
+            $scope.push_review_to_server = function() {
+                var new_chunk = ref.push();
+                new_chunk.set({x: "ex"});
+            }
         })
 
 
