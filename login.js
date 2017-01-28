@@ -1,4 +1,13 @@
 function initApp() {
+
+    // If cookie present, the user is already logged-in
+    logged_in_user = Cookies.getJSON("sklangular_logged_in_user");
+    if (logged_in_user) {
+        window.logged_in_user = logged_in_user;
+        angular.bootstrap(document, ["Sklangular"]);
+        return;
+    }
+
     // Result from Redirect auth flow.
     firebase.auth().getRedirectResult().then(function (result) {
         if (result.credential) {
@@ -13,6 +22,8 @@ function initApp() {
         console.log(result);
         // alert(result.user);
         window.logged_in_user = result.user;
+        logged_in_user_as_json = JSON.stringify(result.user);
+        Cookies.set("sklangular_logged_in_user", result.user, { expires : 10/*days*/ });
         // READY TO START ANGULAR!
         angular.bootstrap(document, ["Sklangular"]);
     }).catch(function (error) {
@@ -30,7 +41,6 @@ function initApp() {
         } else {
             console.error(error);
         }
-        // [END_EXCLUDE]
     });
 }
 
