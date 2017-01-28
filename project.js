@@ -81,7 +81,11 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
 
             $scope.push_review_to_server = function() {
                 var new_chunk = ref.push();
-                new_chunk.set({x: "ex"});
+                new_chunk.set({
+                    comment: $scope.writeableReview.comment,
+                    rating: $scope.writeableReview.rating,
+                    author: $scope.user.displayName
+                });
             }
         })
 
