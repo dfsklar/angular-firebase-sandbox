@@ -13,7 +13,8 @@ function initApp() {
         console.log(result);
         // alert(result.user);
         window.logged_in_user = result.user;
-        window.EXECUTE_SINGLE_PAGE_APP();
+        // READY TO START ANGULAR!
+        angular.bootstrap(document, ["Sklangular"]);
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;

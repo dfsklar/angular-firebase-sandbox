@@ -1,7 +1,10 @@
 <!doctype html>
 
-<!-- The ng-app must match the Angular "module" -->
-<html ng-app="Sklangular">
+<!-- If you include ng-app="..." inside the HTML tag, the angular initialization might happen
+     too early, e.g. before login handshake has been performed.  So I am leaving it OUT of this tag!
+     Instead I will manually call:  angular.bootstrap(document, ["Sklangular"])
+      -->
+<html>
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-resource.min.js"></script>
@@ -22,7 +25,6 @@
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
     <link rel="stylesheet" href="directives/ratingStarstrip/ratingStarstrip.css">
     <link rel="stylesheet" href="demo.css">
-
 
 
 </head>
