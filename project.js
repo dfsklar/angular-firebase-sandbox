@@ -67,8 +67,12 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             $scope.user = window.logged_in_user;
 
             // Ref to the bucket of all reviews for this product.
-            var refReviews = firebase.database().ref('reviewchunks').child($routeParams.productID);
-            this.reviewsToShow = $firebaseArray(refReviews); //.limitToLast(20));
+            // Notice that the ref can be sent through limitToLast at the tail end.
+            var refReviews = firebase.database().ref('reviewchunks').child($routeParams.productID).limitToLast(20);
+
+            // Notice that here is where I'm doing the reversal of order
+            this.reviewsToShow = $firebaseArray(refReviews).reverse();
+
             // <tr ng-repeat="review in ReviewListController.reviewsToShow | filter:projectList.search | orderBy:'name'">
 
             // Ref to this user's index of all reviews he/she have contributed
