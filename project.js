@@ -63,29 +63,39 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
         function ($scope, $firebaseObject, $routeParams, $firebaseArray) {
-            var ref = firebase.database().ref('reviewchunks').child($routeParams.productID);
-            this.reviews = $firebaseArray(ref);
+            $scope.productID = $routeParams.productID;
+            $scope.user = window.logged_in_user;
+
+            // Ref to the bucket of all reviews for this product.
+            var refReviews = firebase.database().ref('reviewchunks').child($routeParams.productID);
+            this.reviewsToShow = $firebaseArray(refReviews); //.limitToLast(20));
+            // <tr ng-repeat="review in ReviewListController.reviewsToShow | filter:projectList.search | orderBy:'name'">
+
+            // Ref to this user's index of all reviews he/she have contributed
+            var refUsers = firebase.database().ref('users').child($scope.user.uid);
 
             console.log("inside RLcontroller");
             // These next lines will allow the template to refer to things such as {{productID}}
-            $scope.productID = $routeParams.productID;
-            $scope.user = window.logged_in_user;
             $scope.writeableReview = {
                 comment: "Write your review here",
                 rating: 3
             };
-            $scope.reviews = this.reviews;
-            // <tr ng-repeat="review in ReviewListController.reviews | filter:projectList.search | orderBy:'name'">
 
             // HANDLERS
 
             $scope.push_review_to_server = function() {
-                var new_chunk = ref.push();
+                var new_chunk = refReviews.push();
+                var chunk_uuid = new_chunk.key;
                 new_chunk.set({
                     comment: $scope.writeableReview.comment,
                     rating: $scope.writeableReview.rating,
-                    author: $scope.user.displayName
+                    authorName: $scope.user.displayName,
+                    authorEmail: $scope.user.email,
+                    photoURL: $scope.user.photoURL,
+                    uid: $scope.user.uid,
+                    time: Date.now()
                 });
+                refUsers.child($scope.productID).push(chunk_uuid);
             }
         })
 

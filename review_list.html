@@ -18,12 +18,17 @@
         <td><button ng-click="push_review_to_server()">Submit</button></td>
     </tr>
 
+    <tr>
+        <td class="buffer" colspan="3" style="padding-top:52px">
+            <b>Below are the most recent 20 reviews made by others:</b>
+        </td>
+    </tr>
 
-    <tr ng-repeat="review in reviewlistCTRLR.reviews">
-        <td>Reviewed&nbsp;by<br/><b>{{review.author}}</b></td>
-        <!-- It does work!  saying value="{{...}}" does do the proper evaluation. -->
-        <td class="commentary"><!-- {{review.rating}} --><!-- THIS PROVES THE MODEL IS BEING MODIFIED! -->
-            <rating-starstrip readonly ng-model='review.rating' value="{{review.rating}}"></rating-starstrip>
+    <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
+    <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow">
+        <td>Reviewed&nbsp;by<br/><b>{{review.authorName}}</b><img width=24 src="{{review.photoURL}}"/></td>
+        <td class="commentary">
+            <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
             <p>{{review.comment}}</p>
         </td>
     </tr>
