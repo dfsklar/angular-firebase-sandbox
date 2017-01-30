@@ -71,6 +71,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
 
             var self = this;
 
+            $scope.userHasNotYetReviewed = true;
+
             // Ref to the bucket of all reviews for this product.
             // Notice that the ref can be sent through limitToLast at the tail end.
             var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child($scope.productID);
@@ -93,7 +95,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             // Below, after the database remote loads have completed, we will override this
             // if we find out this user had already reviewed this product.
             $scope.writeableReview = {
-                comment: "Write your review here, and click on the strip of stars above to specify your rating from 1 to 5 stars.",
+                comment: "",
                 rating: 3
             };
 
@@ -111,6 +113,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                             if (self.key_thisUserReviewOfThisProduct) {
                                 // If we get here, this user *has* indeed already reviewed this very product.
                                 // One more firebase load will give us that particular review:
+                                $scope.userHasNotYetReviewed = false;
                                 self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(self.key_thisUserReviewOfThisProduct));
                                 self.thisUserReviewOfThisProduct.$loaded(
                                     function(x) {

@@ -8,14 +8,32 @@
     <tbody>
 
     <!-- WRITEABLE "send in your own review" -->
+
+    <tr ng-if="userHasNotYetReviewed">
+        <td class="buffer" colspan="3" style="padding-top:52px">
+            <b>Hey!  If you've tried out this product, give your rating and comments right here!</b>
+        </td>
+    </tr>
+    <tr ng-if="!userHasNotYetReviewed">
+        <td class="buffer" colspan="3" style="padding-top:52px">
+            <b>Thanks for your previous review of this product.  Below we show the rating and commentary you provided earlier &mdash;
+                you can revise it if you'd like!</b>
+        </td>
+    </tr>
+
     <tr>
-        <td>Write your review!</td>
+
+        <td></td>
         <td class="commentary">
             <rating-starstrip ng-model='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
-            <textarea ng-model="writeableReview.comment"></textarea><br/>
-            {{writeableReview.comment}} <!-- This static text string proves the writeable is actually being modified! -->
+            <br/><textarea style="width:450px"
+                           placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
+                           ng-model="writeableReview.comment"></textarea><br/>
         </td>
-        <td><button ng-click="push_review_to_server()">Submit</button></td>
+        <td>
+            <button ng-if="!userHasNotYetReviewed" ng-click="update_review()">Revise</button>
+            <button ng-if=" userHasNotYetReviewed" ng-click="push_review_to_server()">Submit</button>
+        </td>
     </tr>
 
     <tr>
@@ -27,7 +45,7 @@
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow">
         <td><b>{{review.authorName}}</b>
-            <br/><i>{{review.authorEmail}}</i><img width=24 src="{{review.photoURL}}"/></td>
+            <br/><i>{{review.authorEmail}}</i><br/><img width=24 src="{{review.photoURL}}"/></td>
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
             <p>{{review.comment}}</p>
