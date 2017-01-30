@@ -80,14 +80,6 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             // ^^^ This is a promise. And the data located at that ref is the *key* of the review, not the actual review.
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
 
-            // We first assume that this particular logged-in user has NOT yet reviewed this particular product.
-            // So we initialize the writeable review with some "prompting" as shown here.
-            // Below, after the database remote loads have completed, we will override this
-            // if we find out this user had already reviewed this product.
-            $scope.writeableReview = {
-                comment: "",
-                rating: 3
-            };
 
             $scope.filter_to_only_others = function() {
                 return function(reviewToTest) {
@@ -120,6 +112,13 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                                         };
                                     }
                                 )
+                            }
+                            else {
+                                // This user has NOT already reviewed this product!
+                                $scope.writeableReview = {
+                                    comment: "",
+                                    rating: 3
+                                };
                             }
                         }
                     )

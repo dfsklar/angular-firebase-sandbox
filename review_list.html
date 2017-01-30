@@ -39,7 +39,7 @@
         <td></td>
         <td class="commentary">
             <!-- In controller:  $scope.writeableReview has been setup -->
-            <rating-starstrip ng-model='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
+            <rating-starstrip ng-model='writeableReview.rating' ng-if='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
             <br/><textarea style="width:450px"
                            placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
                            ng-model="writeableReview.comment"></textarea><br/>
