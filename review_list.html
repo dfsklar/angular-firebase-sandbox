@@ -25,6 +25,7 @@
 
         <td></td>
         <td class="commentary">
+            <!-- In controller:  $scope.writeableReview has been setup -->
             <rating-starstrip ng-model='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
             <br/><textarea style="width:450px"
                            placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
@@ -43,7 +44,7 @@
     </tr>
 
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
-    <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow">
+    <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow | filter:filter_to_only_others()">
         <td><b>{{review.authorName}}</b>
             <br/><i>{{review.authorEmail}}</i><br/><img width=24 src="{{review.photoURL}}"/></td>
         <td class="commentary">

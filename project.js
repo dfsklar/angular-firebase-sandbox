@@ -99,6 +99,12 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                 rating: 3
             };
 
+            $scope.filter_to_only_others = function() {
+                return function(reviewToTest) {
+                    return (reviewToTest.$id != self.key_thisUserReviewOfThisProduct);
+                }
+            };
+
             // I need to have both of these "ref"s already loaded in order to do the
             // work to:
             // 1) identify whether this user has already reviewed this product
@@ -110,6 +116,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                     self.thisUserReviewKey.$loaded(
                         function(thisUserReviewLoaded) {
                             self.key_thisUserReviewOfThisProduct = thisUserReviewLoaded.$value;
+                            $scope.key_thisUserReviewOfThisProduct = self.key_thisUserReviewOfThisProduct;
                             if (self.key_thisUserReviewOfThisProduct) {
                                 // If we get here, this user *has* indeed already reviewed this very product.
                                 // One more firebase load will give us that particular review:
