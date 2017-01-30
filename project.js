@@ -151,7 +151,9 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                     uid: $scope.user.uid,
                     time: Date.now()
                 });
+                self.key_thisUserReviewOfThisProduct = chunk_uuid;
                 refThisUserReview.set(chunk_uuid);
+                $scope.userHasNotYetReviewed = false;
             };
         })
 
