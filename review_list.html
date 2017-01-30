@@ -26,7 +26,8 @@
 
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow">
-        <td>Reviewed&nbsp;by<br/><b>{{review.authorName}}</b><img width=24 src="{{review.photoURL}}"/></td>
+        <td><b>{{review.authorName}}</b>
+            <br/><i>{{review.authorEmail}}</i><img width=24 src="{{review.photoURL}}"/></td>
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
             <p>{{review.comment}}</p>

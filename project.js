@@ -63,32 +63,75 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
         function ($scope, $firebaseObject, $routeParams, $firebaseArray) {
+            console.log("inside RLcontroller");
+
+            // These next lines will allow the template to refer to things such as {{productID}}
             $scope.productID = $routeParams.productID;
             $scope.user = window.logged_in_user;
 
+            var self = this;
+
             // Ref to the bucket of all reviews for this product.
             // Notice that the ref can be sent through limitToLast at the tail end.
-            var refReviews = firebase.database().ref('reviewchunks').child($routeParams.productID).limitToLast(20);
+            var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child($scope.productID);
+            var refReviewsToShow = refAllReviewsOfThisProduct.limitToLast(20);
+            // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
+            // Notice that here is where I'm doing the reversal of order.
+            self.reviewsToShow = $firebaseArray(refReviewsToShow).reverse();
+            // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
 
-            // Notice that here is where I'm doing the reversal of order
-            this.reviewsToShow = $firebaseArray(refReviews).reverse();
+            // We can use this user's own index of all reviews he/she have contributed to determine whether
+            // this user has ever reviewed *this* product.
+            // Again, this is only a promise!
+            var refThisUserReview = firebase.database().ref('users').child($scope.user.uid).child($scope.productID);
+            self.thisUserReviewKey = $firebaseObject(refThisUserReview);
+            // ^^^ This is a promise. And the data located at that ref is the *key* of the review, not the actual review.
+            // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
 
-            // <tr ng-repeat="review in ReviewListController.reviewsToShow | filter:projectList.search | orderBy:'name'">
-
-            // Ref to this user's index of all reviews he/she have contributed
-            var refUsers = firebase.database().ref('users').child($scope.user.uid);
-
-            console.log("inside RLcontroller");
-            // These next lines will allow the template to refer to things such as {{productID}}
+            // We first assume that this particular logged-in user has NOT yet reviewed this particular product.
+            // So we initialize the writeable review with some "prompting" as shown here.
+            // Below, after the database remote loads have completed, we will override this
+            // if we find out this user had already reviewed this product.
             $scope.writeableReview = {
-                comment: "Write your review here",
+                comment: "Write your review here, and click on the strip of stars above to specify your rating from 1 to 5 stars.",
                 rating: 3
             };
+
+            // I need to have both of these "ref"s already loaded in order to do the
+            // work to:
+            // 1) identify whether this user has already reviewed this product
+            // 2) isolate that particular review so it does not appear in the read-only list of "other reviews".
+            // So I must use $loaded twice:
+            self.reviewsToShow.$loaded(
+                function(reviewsLoaded) {
+                    self.loadedReviewsToShow = reviewsLoaded;
+                    self.thisUserReviewKey.$loaded(
+                        function(thisUserReviewLoaded) {
+                            self.key_thisUserReviewOfThisProduct = thisUserReviewLoaded.$value;
+                            if (self.key_thisUserReviewOfThisProduct) {
+                                // If we get here, this user *has* indeed already reviewed this very product.
+                                // One more firebase load will give us that particular review:
+                                self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(self.key_thisUserReviewOfThisProduct));
+                                self.thisUserReviewOfThisProduct.$loaded(
+                                    function(x) {
+                                        $scope.writeableReview = {
+                                            comment: x.comment,
+                                            rating: x.rating
+                                        };
+                                    }
+                                )
+                            }
+                        }
+                    )
+                }
+            );
+
+
 
             // HANDLERS
 
             $scope.push_review_to_server = function() {
-                var new_chunk = refReviews.push();
+                var new_chunk = refAllReviewsOfThisProduct.push();
                 var chunk_uuid = new_chunk.key;
                 new_chunk.set({
                     comment: $scope.writeableReview.comment,
@@ -99,7 +142,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                     uid: $scope.user.uid,
                     time: Date.now()
                 });
-                refUsers.child($scope.productID).push(chunk_uuid);
+                refThisUserReview.set(chunk_uuid);
             }
         })
 
