@@ -112,6 +112,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                                         };
                                     }
                                 )
+                                $('.review-presentation').css('opacity', '1');
                             }
                             else {
                                 // This user has NOT already reviewed this product!
@@ -119,6 +120,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                                     comment: "",
                                     rating: 3
                                 };
+                                $('.review-presentation').css('opacity', '1');
                             }
                         }
                     )
@@ -140,6 +142,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             };
 
             $scope.push_review_to_server = function() {
+                $scope.userHasNotYetReviewed = false;  // Do this immediately to lock out ability to submit more than once accidentally.
                 var new_chunk = refAllReviewsOfThisProduct.push();
                 var chunk_uuid = new_chunk.key;
                 new_chunk.set({
@@ -153,7 +156,6 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                 });
                 self.key_thisUserReviewOfThisProduct = chunk_uuid;
                 refThisUserReview.set(chunk_uuid);
-                $scope.userHasNotYetReviewed = false;
             };
         })
 

@@ -1,7 +1,9 @@
-<p>Logged in as user: {{user.displayName}} <i>{{user.email}}</i>
-&nbsp; &nbsp; &bull; &nbsp;
+<p class="login-panel">Logged in as user: &nbsp; <b>{{user.displayName}}</b> &nbsp; <i>{{user.email}}</i>
+    &nbsp; &nbsp; &bull; &nbsp;
     <button ng-click="doLogout()">Logout</button>
 </p>
+
+
 
 <p ng-controller="ProductListController">
     <img src="{{products[productID].image}}" height="150"/>
@@ -10,7 +12,6 @@
 
 <table class="review-presentation">
     <tbody>
-
 
 
     <!-- WRITEABLE REVIEW:
@@ -23,13 +24,14 @@
     -->
 
     <tr ng-if="userHasNotYetReviewed">
-        <td class="buffer" colspan="3" style="padding-top:52px">
+        <td class="buffer" colspan="3" style="padding-top:22px">
             <b>Hey!  If you've tried out this product, please give your rating and comments right here!</b>
         </td>
     </tr>
     <tr ng-if="!userHasNotYetReviewed">
         <td class="buffer" colspan="3" style="padding-top:52px">
-            <b>Thanks for your previous review of this product.  Below we show the rating and commentary you provided earlier &mdash;
+            <b>Thanks for your <u>previous review</u> of this product!<br/>
+                Below we show the rating and commentary you provided earlier &mdash;
                 you can revise it if you'd like!</b>
         </td>
     </tr>
