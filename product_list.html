@@ -1,0 +1,18 @@
+<p>Logged in as user: {{user.displayName}} <i>{{user.email}}</i>
+    &nbsp; &nbsp; &bull; &nbsp;
+    <button ng-click="doLogout()">Logout</button>
+</p>
+
+
+
+<table class="product-list">
+    <tbody>
+
+
+    <tr ng-repeat="(prodkey,prod) in prodlistCTRLR.products">
+        <td><a ng-href="#!/product_description/{{prod.id}}"><b>{{prod.label}}</b></a></td>
+    </tr>
+
+
+    </tbody>
+</table>

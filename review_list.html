@@ -1,17 +1,30 @@
-<p>Logged in as user: {{user.displayName}}</p>
+<p>Logged in as user: {{user.displayName}} <i>{{user.email}}</i>
+&nbsp; &nbsp; &bull; &nbsp;
+    <button ng-click="doLogout()">Logout</button>
+</p>
 
-<p>Product description for {{productID}}
+<p ng-controller="ProductListController">
+    <img src="{{products[productID].image}}" height="150"/>
 </p>
 
 
 <table class="review-presentation">
     <tbody>
 
-    <!-- WRITEABLE "send in your own review" -->
+
+
+    <!-- WRITEABLE REVIEW:
+
+    The writeable review UI changes slightly based on whether this user has or has not already issued
+    a review for this product.
+
+    If the user *has* already submitted a review for this product, the UI shows that previously-submitted
+    review and the user is allowed to revise and resubmit.
+    -->
 
     <tr ng-if="userHasNotYetReviewed">
         <td class="buffer" colspan="3" style="padding-top:52px">
-            <b>Hey!  If you've tried out this product, give your rating and comments right here!</b>
+            <b>Hey!  If you've tried out this product, please give your rating and comments right here!</b>
         </td>
     </tr>
     <tr ng-if="!userHasNotYetReviewed">
@@ -36,6 +49,12 @@
             <button ng-if=" userHasNotYetReviewed" ng-click="push_review_to_server()">Submit</button>
         </td>
     </tr>
+
+
+
+
+
+
 
     <tr>
         <td class="buffer" colspan="3" style="padding-top:52px">

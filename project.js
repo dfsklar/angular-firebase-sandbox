@@ -37,23 +37,13 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
 
             })
 
-            .when('/framework_list', {
-                controller: 'ProjectListController as projectList',
-                templateUrl: 'list.html'
-                // resolve: resolveProjects // ^^^^ see above comment
+            .when('/product_list', {
+                controller: 'ProductListController as prodlistCTRLR',
+                templateUrl: 'product_list.html'
             })
-            .when('/edit/:projectId', {
-                controller: 'EditProjectController as editProject',
-                templateUrl: 'detail.html'
-                // resolve: resolveProjects
-            })
-            .when('/new', {
-                controller: 'NewProjectController as editProject',
-                templateUrl: 'detail.html'
-                // resolve: resolveProjects
-            })
+
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/product_list'
             });
     })
 
@@ -62,7 +52,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function ($scope, $firebaseObject, $routeParams, $firebaseArray) {
+        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $location) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
@@ -140,6 +130,16 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
 
             // HANDLERS
 
+            $scope.doLogout = function() {
+                Cookies.remove("sklangular_logged_in_user");
+                firebase.auth().signOut().then(function() {
+                    $window.location = ('/product_list');
+                    // Sign-out was successful.
+                }, function(error) {
+                   $window.alert("Logout failed.");
+                });
+            };
+
             $scope.push_review_to_server = function() {
                 var new_chunk = refAllReviewsOfThisProduct.push();
                 var chunk_uuid = new_chunk.key;
@@ -153,7 +153,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                     time: Date.now()
                 });
                 refThisUserReview.set(chunk_uuid);
-            }
+            };
         })
 
 
@@ -162,57 +162,35 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
 
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
-    .controller('ProjectListController', function ($firebaseObject, $firebaseArray) {
-        var ref = firebase.database().ref('framework-db');
-
-        // Now these next 4 lines are actually not necessary at all, but they show how
-        // you would handle obtaining the results here for processing before fulfilling
-        // the promise.
-        ref.on("value", function (snapshot) {
-            var heythere = snapshot.val();
-            var x = 3;
-        });
-
-        // https://github.com/firebase/angularfire/blob/master/docs/guide/synchronized-arrays.md
-        // ^^^ includes the ability to do sorting and "limiting" right there in the firebase query!
-        // READ IT!!!
-        var projectList = this;
-        projectList.userName = window.logged_in_user.displayName;
-        projectList.email = window.logged_in_user.email;
-        projectList.photoURL = window.logged_in_user.photoURL;
-        projectList.projects = $firebaseArray(ref);
-        // <tr ng-repeat="project in projectList.projects | filter:projectList.search | orderBy:'name'">
-    })
-
-
-    .controller('NewProjectController', function ($location, projects) {
-        var editProject = this;
-        editProject.save = function () {
-            projects.$add(editProject.project).then(function (data) {
-                $location.path('/');
-            });
-        };
-    })
-
-    .controller('EditProjectController',
-        function ($location, $routeParams, projects) {
-            var editProject = this;
-            var projectId = $routeParams.projectId,
-                projectIndex;
-
-            editProject.projects = projects;
-            projectIndex = editProject.projects.$indexFor(projectId);
-            editProject.project = editProject.projects[projectIndex];
-
-            editProject.destroy = function () {
-                editProject.projects.$remove(editProject.project).then(function (data) {
-                    $location.path('/');
-                });
+    .controller('ProductListController',
+        function ($scope, $routeParams, $window) {
+            // This currently just hardwires 3 products.
+            this.products = {
+                'prod-001': {
+                    id: 'prod-001', label: "Kinky Boots",
+                    image: "http://theaterleague.com/wp-content/uploads/2014/12/kwicks-slider-size-KINKYlogo.gif"
+                },
+                'prod-002': {
+                    id: 'prod-002', label: "The Lion King",
+                    image: 'https://www.ppacri.org/assets/img/thumbnail_lionking-01-105c3f10c0.jpg'
+                },
+                'prod-003': {
+                    id: 'prod-003', label: "Phantom of the Opera",
+                    image: 'http://www.stsonstage.com/uploads/images/catalog_src/the-phantom-of-the-opera_src_1.jpg'
+                }
             };
 
-            editProject.save = function () {
-                editProject.projects.$save(editProject.project).then(function (data) {
-                    $location.path('/');
+            $scope.products = this.products;
+
+            // Supports logout.
+            $scope.user = window.logged_in_user;
+            $scope.doLogout = function() {
+                Cookies.remove("sklangular_logged_in_user");
+                firebase.auth().signOut().then(function() {
+                    $window.location = ('/');
+                    // Sign-out was successful.
+                }, function(error) {
+                    $window.alert("Logout failed.");
                 });
             };
         });
