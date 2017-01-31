@@ -1,6 +1,8 @@
 <p class="login-panel">Logged in as user: &nbsp; <b>{{user.displayName}}</b> &nbsp; <i>{{user.email}}</i>
     &nbsp; &nbsp; &bull; &nbsp;
     <button ng-click="doLogout()">Logout</button>
+    <br/>&nbsp;<br/>
+    <a href="#/">&triangleleft;&triangleleft;&triangleleft;&triangleleft;&triangleleft; Go back to list of products</a>
 </p>
 
 
@@ -25,7 +27,7 @@
 
     <tr ng-if="userHasNotYetReviewed">
         <td class="buffer" colspan="3" style="padding-top:22px">
-            <b>Hey!  If you've tried out this product, please give your rating and comments right here!</b>
+            <b>Hey - you <u>have not yet reviewed</u> this product!  Have you watched this show?</b>
         </td>
     </tr>
     <tr ng-if="!userHasNotYetReviewed">
@@ -38,7 +40,10 @@
 
     <tr>
 
-        <td></td>
+        <td>
+            <b ng-if="!userHasNotYetReviewed">YOUR PREVIOUS<br/>REVIEW &triangleright;&triangleright;&triangleright;</b>
+            <b ng-if=" userHasNotYetReviewed">Feel free to<br/>write a review &triangleright;&triangleright;&triangleright;</b>
+        </td>
         <td class="commentary">
             <!-- In controller:  $scope.writeableReview has been setup -->
             <rating-starstrip ng-model='writeableReview.rating' ng-if='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
@@ -67,10 +72,10 @@
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow | filter:filter_to_only_others()">
         <td><b>{{review.authorName}}</b>
-            <br/><i>{{review.authorEmail}}</i><br/><img width=24 src="{{review.photoURL}}"/></td>
+            <br/><i>{{review.authorEmail}}</i><br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/></td>
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
-            <p>{{review.comment}}</p>
+            <p class="readonly-commentary">{{review.comment}}</p>
         </td>
     </tr>
 </tbody>

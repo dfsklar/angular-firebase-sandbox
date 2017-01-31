@@ -21,3 +21,10 @@
     position: absolute;
 }
 
+.readonly-commentary {
+    margin-bottom: 12px;
+}
+
+.photo-of-commenter {
+    margin-bottom: 12px;
+}
