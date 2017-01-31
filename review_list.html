@@ -2,7 +2,7 @@
     &nbsp; &nbsp; &bull; &nbsp;
     <button ng-click="doLogout()">Logout</button>
     <br/>&nbsp;<br/>
-    <a href="#/">&triangleleft;&triangleleft;&triangleleft;&triangleleft;&triangleleft; Go back to list of products</a>
+    <a href="#/" style='font-size:16px'>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Go back to list of products</a>
 </p>
 
 
@@ -33,15 +33,14 @@
     <tr ng-if="!userHasNotYetReviewed">
         <td class="buffer" colspan="3" style="padding-top:52px">
             <b>Thanks for your <u>previous review</u> of this product!<br/>
-                Below we show the rating and commentary you provided earlier &mdash;
-                you can revise it if you'd like!</b>
+               You can <u>revise it if you'd like</u>!</b>
         </td>
     </tr>
 
     <tr>
 
         <td>
-            <b ng-if="!userHasNotYetReviewed">YOUR PREVIOUS<br/>REVIEW &triangleright;&triangleright;&triangleright;</b>
+            <b ng-if="!userHasNotYetReviewed">YOUR PREVIOUS<br/>REVIEW made on<br/>{{writeableReview.time | date:'yyyy-MMM-dd'}}<br/> &triangleright;&triangleright;&triangleright;&triangleright;&triangleright;&triangleright;&triangleright;</b>
             <b ng-if=" userHasNotYetReviewed">Feel free to<br/>write a review &triangleright;&triangleright;&triangleright;</b>
         </td>
         <td class="commentary">
@@ -72,7 +71,10 @@
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow | filter:filter_to_only_others()">
         <td><b>{{review.authorName}}</b>
-            <br/><i>{{review.authorEmail}}</i><br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/></td>
+          <br/><i>{{review.authorEmail}}</i>
+          <br/>{{review.time | date:'yyyy-MMM-dd'}}
+          <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/>
+        </td>
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
             <p class="readonly-commentary">{{review.comment}}</p>

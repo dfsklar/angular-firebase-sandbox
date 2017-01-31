@@ -108,7 +108,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                                     function(x) {
                                         $scope.writeableReview = {
                                             comment: x.comment,
-                                            rating: x.rating
+                                            rating: x.rating,
+                                            time: x.time
                                         };
                                     }
                                 )
@@ -118,7 +119,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                                 // This user has NOT already reviewed this product!
                                 $scope.writeableReview = {
                                     comment: "",
-                                    rating: 3
+                                    rating: 1
                                 };
                                 $('.review-presentation').css('opacity', '1');
                             }
@@ -155,6 +156,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                     time: Date.now()
                 });
                 self.key_thisUserReviewOfThisProduct = chunk_uuid;
+                $scope.writeableReview.time = Date.now();
+                self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(chunk_uuid));
                 refThisUserReview.set(chunk_uuid);
             };
 
@@ -162,6 +165,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             $scope.update_review = function() {
                 self.thisUserReviewOfThisProduct.comment = $scope.writeableReview.comment;
                 self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
+                self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
             };
         })
