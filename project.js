@@ -134,7 +134,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             $scope.doLogout = function() {
                 Cookies.remove("sklangular_logged_in_user");
                 firebase.auth().signOut().then(function() {
-                    $window.location = ('/product_list');
+                    $window.location = ('/angular-firebase-sandbox');
                     // Sign-out was successful.
                 }, function(error) {
                    $window.alert("Logout failed.");
@@ -157,7 +157,15 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
                 self.key_thisUserReviewOfThisProduct = chunk_uuid;
                 refThisUserReview.set(chunk_uuid);
             };
+
+
+            $scope.update_review = function() {
+                self.thisUserReviewOfThisProduct.comment = $scope.writeableReview.comment;
+                self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
+                self.thisUserReviewOfThisProduct.$save();
+            };
         })
+
 
 
 
@@ -190,7 +198,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             $scope.doLogout = function() {
                 Cookies.remove("sklangular_logged_in_user");
                 firebase.auth().signOut().then(function() {
-                    $window.location = ('/');
+                    $window.location = ('/angular-firebase-sandbox');
                     // Sign-out was successful.
                 }, function(error) {
                     $window.alert("Logout failed.");
