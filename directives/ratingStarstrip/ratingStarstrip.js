@@ -143,7 +143,8 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             scope.getListItemStyle = function(index) {
                 var css = {
                     'font-size': scope.size + 'px',
-                    'padding-right': index !== scope.icons.length - 1 ? scope.spacing + 'px' : '0'
+                    'padding-right': index !== scope.icons.length - 1 ? scope.spacing + 'px' : '0',
+                    'cursor': (scope.readOnly) ? 'normal':'pointer'
                 };
 
                 if (!scope.decimal) {
