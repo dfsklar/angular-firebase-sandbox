@@ -11,22 +11,9 @@ and then used via:
 
 angular.module('Sklangular').directive('ratingStarstrip', function(){
     return {
-        // restrict - I don't think I need to do this.  The default is A and E (attrs and elems).
 
-        // ??? have no clue, may not be needed:  transclude: true,
-
-
-        // If you want an ngModelController to be available so you can call $setViewValue/$render,
-        // you must do this:
+        // To ensure an ngModelController is available so you can call $setViewValue/$render:
         require: '?ngModel',
-
-
-        /*
-        scope: {
-            featured: '=ngModel',
-            isAlt: '=',
-        },
-        */
 
         template: '' +
             '<ul ng-class="[listClass, decimal]">' +
@@ -39,13 +26,6 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             '<i ng-class="getClass($index)" ng-style="getIconStyle($index)"></i>' +
             '</li>' +
             '</ul>',
-
-        controller: function($scope, $element) {
-
-            this.respond_to_change = function() {
-                var x = $scope;
-            };
-        },
 
         // In my case, the way I'm using this:  the controller is null.
         // But I do need a value to be involved, right now it is hardwired within this.
@@ -177,9 +157,6 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
 
                 console.log("setValue called about to call setViewValue");
                 controller.$setViewValue(scope.value = index + 1);
-                // >> This didn't work even though this.resp...
-                // //controller.respond_to_change();  //scope.fn();
-                // scope.record_new_value();
             };
 
             /**
