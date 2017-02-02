@@ -31,29 +31,39 @@
         </td>
     </tr>
     <tr ng-if="!userHasNotYetReviewed">
-        <td class="buffer" colspan="3" style="padding-top:52px">
+        <td class="buffer" colspan="2" style="padding-top:52px">
             <b>Thanks for your <u>previous review</u> of this product!<br/>
                You can <u>revise it if you'd like</u>!</b>
         </td>
+        <td>          <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
+            Revise!
+        </md-button></td>
     </tr>
 
-    <tr>
 
-        <td>
-            <b ng-if="!userHasNotYetReviewed">YOUR PREVIOUS<br/>REVIEW made on<br/>{{writeableReview.time | date:'yyyy-MMM-dd'}}<br/> &triangleright;&triangleright;&triangleright;&triangleright;&triangleright;&triangleright;&triangleright;</b>
-            <b ng-if=" userHasNotYetReviewed">Feel free to<br/>write a review &triangleright;&triangleright;&triangleright;</b>
+    <tr ng-if="userHasNotYetReviewed">
+        <td colspan=2>
+            You have not yet reviewed this.
+            <br/>
+            <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
+                Rate this!
+            </md-button>
         </td>
+    <!-- In controller:  $scope.writeableReview has been setup -->
+    <!--
         <td class="commentary">
-            <!-- In controller:  $scope.writeableReview has been setup -->
             <rating-starstrip ng-model='writeableReview.rating' ng-if='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
             <br/><textarea style="width:450px"
                            placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
                            ng-model="writeableReview.comment"></textarea><br/>
         </td>
+    -->
+    <!--
         <td>
             <button ng-if="!userHasNotYetReviewed" ng-click="update_review()">Revise</button>
             <button ng-if=" userHasNotYetReviewed" ng-click="push_review_to_server()">Submit</button>
-        </td>
+        </td> -->
+
     </tr>
 
 
@@ -83,3 +93,27 @@
 </tbody>
 </table>
 
+
+
+
+<div style="visibility:hidden">
+    <script type="text/ng-template" id="dialog1.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Rate and Comment</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <rating-starstrip ng-model='writeableReview.rating' ng-if='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
+                    <br/><textarea style="width:450px"
+                                   placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
+                                   ng-model="writeableReview.comment"></textarea><br/>
+        </md-dialog-content>
+    </form>
+    </script>
+</div>

@@ -1,5 +1,5 @@
 
-angular.module('Sklangular', ['ngRoute', 'firebase'])
+angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
     .value('fbURL', 'https://angularsandbox-640d4.firebaseio.com/')
 
@@ -52,7 +52,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $location) {
+        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $location) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
@@ -79,6 +79,44 @@ angular.module('Sklangular', ['ngRoute', 'firebase'])
             self.thisUserReviewKey = $firebaseObject(refThisUserReview);
             // ^^^ This is a promise. And the data located at that ref is the *key* of the review, not the actual review.
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
+
+
+
+
+
+
+
+
+            function DialogSubController($scope, $mdDialog) {
+                $scope.hide = function() {
+                    $mdDialog.hide();
+                };
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+
+                $scope.answer = function(answer) {
+                    $mdDialog.hide(answer);
+                };
+            }
+
+
+            $scope.popupReviewDialog = function(ev) {
+                $mdDialog.show({
+                    controller: DialogSubController,
+                    templateUrl: 'dialog1.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose:true,
+                    fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
+                })
+                    .then(function(answer) {
+                        $scope.status = 'You said the information was "' + answer + '".';
+                    }, function() {
+                        $scope.status = 'You cancelled the dialog.';
+                    });
+            };
 
 
             $scope.filter_to_only_others = function() {

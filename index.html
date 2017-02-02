@@ -6,15 +6,27 @@
       -->
 <html>
 <head>
+    <!-- Angular Material CSS now available via Google CDN; version 1.0.7 used here -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+    <link rel="stylesheet" href="directives/ratingStarstrip/ratingStarstrip.css">
+    <link rel="stylesheet" href="demo.css">
 
+</head>
+<body>
     <!-- totally ok to bring in jquery for an angular app -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="cookie-plugin.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-resource.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js">
     </script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 1.0.7 used here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
 
     <script src="https://use.fontawesome.com/91a781c0eb.js"></script>
 
@@ -26,15 +38,10 @@
     <script src="project.js"></script>
     <script src="directives/ratingStarstrip/ratingStarstrip.js"></script>
 
+    <!-- ng-view simply says: let the template (identified via the router) be placed here. -->
+    <div class="outer" ng-view>
 
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
-    <link rel="stylesheet" href="directives/ratingStarstrip/ratingStarstrip.css">
-    <link rel="stylesheet" href="demo.css">
+    </div>
 
-
-</head>
-<body>
-<!-- ng-view simply says: let the template (identified via the router) be placed here. -->
-<div class="outer" ng-view></div>
 </body>
 </html>
