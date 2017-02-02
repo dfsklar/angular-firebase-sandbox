@@ -65,15 +65,7 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             }, true);
             */
 
-            /*
-            // Model
-            controller.$render = function() {
-				      scope.value = controller.$viewValue === 0 ? 0 : controller.$viewValue || scope.value;
 
-			      	// update model safeguard/fallback should it not be initialized before
-			      	controller.$setViewValue(scope.value);
-            };
-            */
 
             /**
              * Returns the appropriate class for the icon.

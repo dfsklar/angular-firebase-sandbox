@@ -52,7 +52,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $location) {
+        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $route) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
@@ -81,30 +81,10 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
 
 
-
-
-
-
-
-
-            function DialogSubController($scope, $mdDialog) {
-                $scope.hide = function() {
-                    $mdDialog.hide();
-                };
-
-                $scope.cancel = function() {
-                    $mdDialog.cancel();
-                };
-
-                $scope.answer = function(answer) {
-                    $mdDialog.hide(answer);
-                };
-            }
-
-
             $scope.popupReviewDialog = function(ev) {
                 $mdDialog.show({
-                    xxxxcontroller: DialogSubController,
+                    scope: $scope,  // We want the popup dialog to use THIS controller!
+                    preserveScope: true,  // If you don't do this, this shared scope will be DESTROYED when dialog is closed.
                     templateUrl: 'dialog1.tmpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
@@ -204,6 +184,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
                 $mdDialog.hide();
+                $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
             };
         })
 
