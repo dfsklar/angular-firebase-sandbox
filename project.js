@@ -135,7 +135,11 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                                 // This user has NOT already reviewed this product!
                                 $scope.writeableReview = {
                                     comment: "",
-                                    rating: 1
+                                    rating: 1,
+                                    authorName: $scope.user.displayName,
+                                    authorEmail: $scope.user.email,
+                                    photoURL: $scope.user.photoURL,
+                                    uid: $scope.user.uid
                                 };
                                 $('.review-presentation').css('opacity', '1');
                             }
@@ -175,6 +179,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 $scope.writeableReview.time = Date.now();
                 self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(chunk_uuid));
                 refThisUserReview.set(chunk_uuid);
+                $mdDialog.hide();
+                $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
             };
 
 
