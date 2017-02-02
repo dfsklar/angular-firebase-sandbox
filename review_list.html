@@ -30,12 +30,27 @@
             <b>Hey - you <u>have not yet reviewed</u> this product!  Have you watched this show?</b>
         </td>
     </tr>
+
     <tr ng-if="!userHasNotYetReviewed">
-        <td class="buffer" colspan="2" style="padding-top:52px">
+
+        <td class="buffer" colspan="3" style="padding-top:52px">
             <b>Thanks for your <u>previous review</u> of this product!<br/>
                You can <u>revise it if you'd like</u>!</b>
         </td>
-        <td>          <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
+    </tr>
+    <tr ng-if="!userHasNotYetReviewed">
+        <td><b>{{writeableReview.authorName}}</b>
+            <br/><i>{{writeableReview.authorEmail}}</i>
+            <br/>{{writeableReview.time | date:'yyyy-MMM-dd'}}
+            <br/><img class='photo-of-commenter' width=24 src="{{writeableReview.photoURL}}"/>
+        </td>
+        <td class="commentary">
+            <rating-starstrip readonly value="{{writeableReview.rating}}"></rating-starstrip>
+            <p class="readonly-commentary">{{writeableReview.comment}}</p>
+        </td>
+
+            <td>
+            <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
             Revise!
         </md-button></td>
     </tr>
@@ -97,14 +112,18 @@
 
 
     <script type="text/ng-template" id="dialog1.tmpl.html">
-        <md-dialog aria-label="Mango (Fruit)">
+        <!-- BIZARRE:  this did not know which controller to use so I had to specify.  ?? -->
+        <md-dialog aria-label="Mango (Fruit)" ng-controller="ReviewListController">
     <form ng-cloak>
         <md-dialog-content>
-            <div class="md-dialog-content">
-            <rating-starstrip ng-model='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
-                    <br/><textarea style="xxxxwidth:450px"
+            <div class="md-dialog-content" style="text-align:center">
+                <p>RATING</p>
+            <rating-starstrip ng-model='writeableReview.rating' ng-if='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
+                    <br/><textarea style="width:350px;height:220px"
                                    placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
-                                   ng-model="writeableReview.comment"></textarea>
+                                   ng-model="writeableReview.comment"></textarea><br/>
+                <md-button class="md-primary md-raised"  ng-if="!userHasNotYetReviewed" ng-click="update_review()">Revise</md-button>
+                <md-button class="md-primary md-raised"  ng-if=" userHasNotYetReviewed" ng-click="push_review_to_server()">SAVE</md-button>
             </div>
         </md-dialog-content>
         <md-dialog-actions></md-dialog-actions>

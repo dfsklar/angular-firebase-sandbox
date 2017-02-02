@@ -104,18 +104,13 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
             $scope.popupReviewDialog = function(ev) {
                 $mdDialog.show({
-                    controller: DialogSubController,
+                    xxxxcontroller: DialogSubController,
                     templateUrl: 'dialog1.tmpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose:true,
                     fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
-                })
-                    .then(function(answer) {
-                        $scope.status = 'You said the information was "' + answer + '".';
-                    }, function() {
-                        $scope.status = 'You cancelled the dialog.';
-                    });
+                });
             };
 
 
@@ -147,7 +142,10 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                                         $scope.writeableReview = {
                                             comment: x.comment,
                                             rating: x.rating,
-                                            time: x.time
+                                            time: x.time,
+                                            photoURL: x.photoURL,
+                                            authorName: x.authorName,
+                                            authorEmail: x.authorEmail
                                         };
                                     }
                                 )
@@ -205,6 +203,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
                 self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
+                $mdDialog.hide();
             };
         })
 
