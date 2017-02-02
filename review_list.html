@@ -96,24 +96,19 @@
 
 
 
-<div style="visibility:hidden">
-    <script type="text/ng-template" id="dialog1.tmpl.html"><md-dialog aria-label="Mango (Fruit)">
+    <script type="text/ng-template" id="dialog1.tmpl.html">
+        <md-dialog aria-label="Mango (Fruit)">
     <form ng-cloak>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>Rate and Comment</h2>
-                <span flex></span>
-                <md-button class="md-icon-button" ng-click="cancel()">
-                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
         <md-dialog-content>
+            <div class="md-dialog-content">
             <rating-starstrip ng-model='writeableReview.rating' value="{{writeableReview.rating}}"></rating-starstrip>
                     <br/><textarea style="xxxxwidth:450px"
                                    placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
-                                   ng-model="writeableReview.comment"></textarea><br/>
+                                   ng-model="writeableReview.comment"></textarea>
+            </div>
         </md-dialog-content>
+        <md-dialog-actions></md-dialog-actions>
     </form>
+        </md-dialog>
     </script>
-</div>
+
