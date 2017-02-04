@@ -1,3 +1,22 @@
+window.sklangular = {
+    calcAverage: function($firebaseArray, refAllReviews) {
+        var fbaAllReviews = $firebaseArray(refAllReviews);
+        fbaAllReviews.$loaded(
+            function(allReviewsLoaded) {
+                var debug = 1;
+            }
+        );
+        return;
+        var sum = 0;
+        var count = refAllReviews.numChildren();
+        refAllReviews.forEach(function(review) {
+            sum += review.child('rating').val();
+        });
+        return sum / count;
+    }
+}
+
+
 
 angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
@@ -179,6 +198,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 $scope.writeableReview.time = Date.now();
                 self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(chunk_uuid));
                 refThisUserReview.set(chunk_uuid);
+                // Update average
+                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct);
                 $mdDialog.hide();
                 $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
             };
@@ -189,6 +210,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
                 self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
+                // Update average
+                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct);
                 $mdDialog.hide();
                 $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
             };
