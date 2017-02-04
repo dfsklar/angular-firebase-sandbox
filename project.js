@@ -140,6 +140,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                                     function(x) {
                                         $scope.writeableReview = {
                                             comment: x.comment,
+                                            headline: x.headline,
                                             rating: x.rating,
                                             time: x.time,
                                             photoURL: x.photoURL,
@@ -154,6 +155,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                                 // This user has NOT already reviewed this product!
                                 $scope.writeableReview = {
                                     comment: "",
+                                    headline: "",
                                     rating: 1,
                                     authorName: $scope.user.displayName,
                                     authorEmail: $scope.user.email,
@@ -186,6 +188,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 var new_chunk = refAllReviewsOfThisProduct.push();
                 var chunk_uuid = new_chunk.key;
                 new_chunk.set({
+                    headline: $scope.writeableReview.headline,
                     comment: $scope.writeableReview.comment,
                     rating: $scope.writeableReview.rating,
                     authorName: $scope.user.displayName,
@@ -206,6 +209,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
 
             $scope.update_review = function() {
+                self.thisUserReviewOfThisProduct.headline = $scope.writeableReview.headline;
                 self.thisUserReviewOfThisProduct.comment = $scope.writeableReview.comment;
                 self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
                 self.thisUserReviewOfThisProduct.time = Date.now();
