@@ -93,8 +93,8 @@
         </td>
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
-            <p class="readonly-headline">{{review.headline}}</p>
-            <p class="readonly-commentary">{{review.comment}}</p>
+            <p class="readonly-headline">{{review.headline | limitTo:40}}</p>
+            <p class="readonly-commentary">{{review.comment | limitTo:1000}}</p>
         </td>
     </tr>
 </tbody>
