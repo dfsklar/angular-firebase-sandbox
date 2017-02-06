@@ -7,6 +7,17 @@ td {
     border-bottom: 1px solid grey;
 }
 
+.headline {
+    font-weight: bold;
+    width: 350px;
+}
+
+.readonly-headline {
+    font-weight: bold;
+    font-style: normal;
+}
+
+
 .commentary {
     font-style: italic;
 }
