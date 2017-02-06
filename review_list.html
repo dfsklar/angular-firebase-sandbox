@@ -11,6 +11,12 @@
     <img src="{{products[productID].image}}" height="150"/>
 </p>
 
+<p class="consensus"><b>Consensus:</b> Average rating from corpus of {{consensus.count}} reviews:<br/>
+    <span class="average">
+{{consensus.ratingOutOfFive}} &nbsp; </span>
+    <rating-starstrip readonly max="10" decimal ng-if="consensus.average" value="{{consensus.ratingOutOfTen}}" icon-size="30"></rating-starstrip>
+</p>
+
 
 <table class="review-presentation">
     <tbody>

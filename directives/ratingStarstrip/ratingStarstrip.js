@@ -53,19 +53,6 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             var iconFull = attrs.iconFull || 'fa-star';
             var iconHover = attrs.iconHover || 'fa-star';
 
-            /*
-            scope.$watch('data', function(newValue){
-                console.log("WATCH 1 - data");
-                console.log(newValue);
-            }, true);
-
-            scope.$watch('rating', function(newValue){
-                console.log("WATCH 2 - rating");
-                console.log(newValue);
-            }, true);
-            */
-
-
 
             /**
              * Returns the appropriate class for the icon.

@@ -7,6 +7,10 @@ td {
     border-bottom: 1px solid grey;
 }
 
+p.consensus .average {
+    font-size: 18px;
+}
+
 .headline {
     font-weight: bold;
     width: 350px;

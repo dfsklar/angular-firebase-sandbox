@@ -91,6 +91,15 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // Notice that here is where I'm doing the reversal of order.
             self.reviewsToShow = $firebaseArray(refReviewsToShow).reverse();
             // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
+            self.statsForThisProduct = $firebaseObject(refStatsForThisProduct);
+
+            self.statsForThisProduct.$loaded(
+                function (loadedStats) {
+                    $scope.consensus = loadedStats;
+                    $scope.consensus.ratingOutOfTen = Math.round(loadedStats.average*2);
+                    $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
+                }
+            );
 
             // We can use this user's own index of all reviews he/she have contributed to determine whether
             // this user has ever reviewed *this* product.
