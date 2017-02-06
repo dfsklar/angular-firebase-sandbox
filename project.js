@@ -1,5 +1,5 @@
 window.sklangular = {
-    calcAverage: function($firebaseArray, refAllReviews, refStatsForThisProduct) {
+    calcAverage: function($firebaseArray, refAllReviews, refStatsForThisProduct, cbCompletion) {
         var fbaAllReviews = $firebaseArray(refAllReviews);
         fbaAllReviews.$loaded(
             function(allReviewsLoaded) {
@@ -10,7 +10,9 @@ window.sklangular = {
                 });
                 refStatsForThisProduct.child('average').set(sum/count);
                 refStatsForThisProduct.child('count').set(count);
-                return sum / count;
+                if (cbCompletion) {
+                    cbCompletion();
+                }
             }
         );
     }
@@ -212,9 +214,13 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(chunk_uuid));
                 refThisUserReview.set(chunk_uuid);
                 // Update average
-                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct);
                 $mdDialog.hide();
-                $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
+                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct,
+                   function() {
+                       $route.reload();
+                       // Essential since we have no real way to force the
+                       // writeable starstrip on the main page (not the dialogbox) to update!
+                   });
             };
 
 
@@ -225,9 +231,11 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
                 // Update average
-                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct);
                 $mdDialog.hide();
-                $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
+                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct,
+                   function() {
+                       $route.reload();
+                   });
             };
         })
 
