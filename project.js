@@ -1,20 +1,20 @@
 window.sklangular = {
-    calcAverage: function($firebaseArray, refAllReviews) {
+    calcAverage: function($firebaseArray, refAllReviews, refStatsForThisProduct) {
         var fbaAllReviews = $firebaseArray(refAllReviews);
         fbaAllReviews.$loaded(
             function(allReviewsLoaded) {
-                var debug = 1;
+                var sum = 0;
+                var count = (allReviewsLoaded.length);
+                allReviewsLoaded.forEach(function(oneReview) {
+                    sum += oneReview.rating;
+                });
+                refStatsForThisProduct.child('average').set(sum/count);
+                refStatsForThisProduct.child('count').set(count);
+                return sum / count;
             }
         );
-        return;
-        var sum = 0;
-        var count = refAllReviews.numChildren();
-        refAllReviews.forEach(function(review) {
-            sum += review.child('rating').val();
-        });
-        return sum / count;
     }
-}
+};
 
 
 
@@ -85,6 +85,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // Ref to the bucket of all reviews for this product.
             // Notice that the ref can be sent through limitToLast at the tail end.
             var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child($scope.productID);
+            var refStatsForThisProduct = firebase.database().ref('stats').child($scope.productID);
             var refReviewsToShow = refAllReviewsOfThisProduct.limitToLast(20);
             // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
             // Notice that here is where I'm doing the reversal of order.
@@ -202,7 +203,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(chunk_uuid));
                 refThisUserReview.set(chunk_uuid);
                 // Update average
-                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct);
+                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct);
                 $mdDialog.hide();
                 $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
             };
@@ -215,7 +216,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
                 // Update average
-                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct);
+                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct);
                 $mdDialog.hide();
                 $route.reload();  // Essential since we have no real way to force the writeable starstrip on the main page (not the dialogbox) to update!
             };
