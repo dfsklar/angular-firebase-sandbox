@@ -113,6 +113,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
 
             $scope.popupReviewDialog = function(ev) {
+                $scope.unsavedwriteableReview = jQuery.extend({}, $scope.writeableReview);  // shallow copy
                 $mdDialog.show({
                     scope: $scope,  // We want the popup dialog to use THIS controller!
                     preserveScope: true,  // If you don't do this, this shared scope will be DESTROYED when dialog is closed.
@@ -196,6 +197,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             };
 
             $scope.push_review_to_server = function() {
+                $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy
                 $scope.userHasNotYetReviewed = false;  // Do this immediately to lock out ability to submit more than once accidentally.
                 var new_chunk = refAllReviewsOfThisProduct.push();
                 var chunk_uuid = new_chunk.key;
@@ -225,6 +227,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
 
             $scope.update_review = function() {
+                $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy
                 self.thisUserReviewOfThisProduct.headline = $scope.writeableReview.headline;
                 self.thisUserReviewOfThisProduct.comment = $scope.writeableReview.comment;
                 self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
