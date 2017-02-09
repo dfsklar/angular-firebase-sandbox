@@ -26,9 +26,9 @@ ELSE:
     It is NOT clickable; this is not a CTA.
 -->
 
-<!-- First case:  logged-in user has NOT yet rated -->
+<!-- First case:  logged-in user has NOT yet rated.  This is a readonly starstrip but is a call-to-action so clickable cursor -->
 <p ng-if="userHasNotYetReviewed && consensus.average" class="consensus clickable" ng-click="popupReviewDialog($event)">
-    <rating-starstrip readonly max="10" decimal ng-if="consensus.average"
+    <rating-starstrip readonly clickable max="10" decimal ng-if="consensus.average"
                       color-base="blue" color-selected="blue" icon-size="20"
                       value="{{consensus.ratingOutOfTen}}" icon-size="16"></rating-starstrip>
     ({{consensus.count}} ratings)
