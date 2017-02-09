@@ -1,10 +1,30 @@
+body {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+td.commentary {
+    padding-right: 60px;
+    padding-bottom: 20px;
+}
+
+p.headline {
+    font-size: 15px;
+}
+
+td.commenter-identity {
+    padding-top: 38px;
+    padding-bottom: 30px;
+}
+
+
 
 td {
     padding-left: 8px;
     padding-right: 9px;
     padding-top: 9px;
     vertical-align: top;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid lightgrey;
 }
 
 span.launcher {
@@ -40,12 +60,9 @@ p.consensus .average {
 }
 
 
-.commentary {
-    font-style: italic;
-}
 
 .review-presentation {
-    width: 600px;
+    width: 100%;
     opacity: 0;
 }
 

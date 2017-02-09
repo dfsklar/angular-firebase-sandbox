@@ -59,7 +59,7 @@ Exception:  if the logged-in user has already reviewed this product,
 that review (no matter how old) is displayed as the first one along with a CTA to edit or delete.
 -->
 
-<p>
+<p class="headline">
     <b>Recent comments </b>
     <span ng-click="popupReviewDialog($event)" ng-if="userHasNotYetReviewed" class="launcher">Add Rating / Comment</span>
 </p>
@@ -81,62 +81,55 @@ that review (no matter how old) is displayed as the first one along with a CTA t
     review and the user is allowed to revise and resubmit.
     -->
 
-    <tr ng-if="!userHasNotYetReviewed">
+    <!-- Note: in controller: $scope.writeableReview has been setup -->
 
-        <td class="buffer" colspan="3" style="padding-top:52px">
-            <b>Thanks for your <u>previous review</u> of this product!<br/>
-               You can <u>revise it if you'd like</u>!</b>
-        </td>
-    </tr>
     <tr ng-if="!userHasNotYetReviewed">
-        <td><b>{{writeableReview.authorName}}</b>
-            <br/><i>{{writeableReview.authorEmail}}</i>
-            <br/>{{writeableReview.time | date:'yyyy-MMM-dd'}}
-            <br/><img class='photo-of-commenter' width=24 src="{{writeableReview.photoURL}}"/>
-        </td>
         <td class="commentary">
             <rating-starstrip readonly value="{{writeableReview.rating}}"></rating-starstrip>
-            <p class="readonly-headline">{{writeableReview.headline}}</p>
+            <p class="readonly-headline">{{writeableReview.headline | uppercase}}</p>
             <p class="readonly-commentary">{{writeableReview.comment}}</p>
         </td>
-
-            <td>
+        <td class="commenter-identity"><b>{{writeableReview.authorName}}</b>
+            <br/><i>{{writeableReview.authorEmail}}</i>
+            <!-- <br/>{{writeableReview.time | date:'yyyy-MMM-dd'}} -->
+            <!-- <br/><img class='photo-of-commenter' width=24 src="{{writeableReview.photoURL}}"/> -->
+        </td>
+        <td>
             <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
-            Revise!
-        </md-button></td>
-    </tr>
-
-
-    <tr ng-if="userHasNotYetReviewed">
-        <td colspan=2>
-            You have not yet reviewed this.
-            <br/>
-            <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
-                Rate this!
+            Edit
             </md-button>
         </td>
-    <!-- In controller:  $scope.writeableReview has been setup -->
     </tr>
 
 
 
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow | filter:filter_to_only_others()">
-        <td><b>{{review.authorName}}</b>
-          <br/><i>{{review.authorEmail}}</i>
-          <br/>{{review.time | date:'yyyy-MMM-dd'}}
-          <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/>
-        </td>
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
-            <p class="readonly-headline">{{review.headline | limitTo:40}}</p>
+            <p ng-if="review.headline.length > 0" class="readonly-headline">{{review.headline | uppercase}}</p>
             <p class="readonly-commentary">{{review.comment | limitTo:1000}}</p>
+        </td>
+        <td class="commenter-identity"><b>{{review.authorName}}</b>
+          <br/><i>{{review.authorEmail}}</i>
+          <!--
+          <br/>{{review.time | date:'yyyy-MMM-dd'}}
+          <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/> -->
         </td>
     </tr>
 </tbody>
 </table>
 
 
+
+
+
+
+
+
+
+
+<!-- PAGE AREA:  DIALOG BOX FOR ENDUSER CREATION / REVISING OF COMMENTS -->
 
 
 <script type="text/ng-template" id="dialog1.tmpl.html">
