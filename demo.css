@@ -7,6 +7,16 @@ td {
     border-bottom: 1px solid grey;
 }
 
+span.launcher {
+    padding-left: 12px;
+    color: blue;
+    cursor: pointer;
+}
+hr.slender {
+    margin-top: 0px;
+    margin-bottom: 12px;
+}
+
 .charmax-reached {
     margin-top: -3px;
     padding-bottom: 9px;

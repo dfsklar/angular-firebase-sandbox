@@ -43,7 +43,7 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             scope.value = attrs.value;
 
             // Colors
-            var colorBase = attrs.colorBase || 'black';
+            var colorBase = attrs.colorBase || 'orange';
             var colorSelected = attrs.colorSelected || 'orange';
             var colorHover = attrs.colorHover || 'orange';
 

@@ -11,11 +11,61 @@
     <img src="{{products[productID].image}}" height="150"/>
 </p>
 
-<p class="consensus"><b>Consensus:</b> Average rating from corpus of {{consensus.count}} reviews:<br/>
-    <span class="average">
-{{consensus.ratingOutOfFive}} &nbsp; </span>
-    <rating-starstrip readonly max="10" decimal ng-if="consensus.average" value="{{consensus.ratingOutOfTen}}" icon-size="30"></rating-starstrip>
+
+
+
+
+
+<!-- PAGE AREA:  CONSENSUS/"YOUR OWN" RATING DISPLAY
+
+IF the logged-in user has not yet rated this product:
+    We show the average rating for this product + Number of ratings involved
+    This display is a clickable call to action launching the create-rating-andor-comment popup.
+ELSE:
+    We show the logged-in user's own rating here and we do not show any count of the number of community ratings.
+    It is NOT clickable; this is not a CTA.
+-->
+
+<!-- First case:  logged-in user has NOT yet rated -->
+<p ng-if="userHasNotYetReviewed && consensus.average" class="consensus">
+    <rating-starstrip readonly max="10" decimal ng-if="consensus.average"
+                      value="{{consensus.ratingOutOfTen}}" icon-size="16"></rating-starstrip>
+    ({{consensus.count}} ratings)
 </p>
+<!-- Alt case:  logged-in user HAS ALREADY RATED this product. -->
+<p ng-if="!userHasNotYetReviewed" class="consensus">
+    <rating-starstrip readonly max="5"  ng-if="writeableReview.rating"
+                      value="{{writeableReview.rating}}" icon-size="20"></rating-starstrip>
+</p>
+
+
+<hr class="slender"/>
+
+<p>Product description would go here. Product description would go here. Product description would go here. Product description would go here. </p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+
+
+
+<!-- PAGE AREA:  DISPLAY OF RECENT COMMENTS (and user's own comment if available)
+
+Here we display the most-recent comments in reverse-chrono order.
+Exception:  if the logged-in user has already reviewed this product,
+that review (no matter how old) is displayed as the first one along with a CTA to edit or delete.
+-->
+
+<p>
+    <b>Recent comments </b>
+    <span ng-click="popupReviewDialog($event)" ng-if="userHasNotYetReviewed" class="launcher">Add Rating / Comment</span>
+</p>
+
+
+<hr class="slender"/>
+
 
 
 <table class="review-presentation">
