@@ -113,9 +113,11 @@
                 <br/>
             <input class="headline" maxlength="40" type="text" placeholder="Enter a headline/title here" ng-model="unsavedwriteableReview.headline"/>
             <br/>
-            <textarea style="width:350px;height:220px" maxlength="1000"
+            <div ng-if="unsavedwriteableReview.headline.length >= 40" class="charmax-reached">40 characters maximum!</div>
+            <textarea style="width:350px;height:220px" maxlength="1000" ng-trim="false"
                                placeholder="Click on the stars to select your rating (from 1 to 5 stars), and type in this box to provide your comments."
-                               ng-model="unsavedwriteableReview.comment"></textarea><br/>
+                               ng-model="unsavedwriteableReview.comment"></textarea>
+            <div class="charcounter">{{1000 - unsavedwriteableReview.comment.length}} characters remaining</div>
             <md-button class="md-primary md-raised"  ng-if="!userHasNotYetReviewed" ng-click="update_review()">Revise</md-button>
             <md-button class="md-primary md-raised"  ng-if=" userHasNotYetReviewed" ng-click="push_review_to_server()">SAVE</md-button>
         </div>
