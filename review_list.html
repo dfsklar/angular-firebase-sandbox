@@ -29,6 +29,7 @@ ELSE:
 <!-- First case:  logged-in user has NOT yet rated -->
 <p ng-if="userHasNotYetReviewed && consensus.average" class="consensus">
     <rating-starstrip readonly max="10" decimal ng-if="consensus.average"
+                      color-base="blue" color-selected="blue"
                       value="{{consensus.ratingOutOfTen}}" icon-size="16"></rating-starstrip>
     ({{consensus.count}} ratings)
 </p>
@@ -71,7 +72,6 @@ that review (no matter how old) is displayed as the first one along with a CTA t
 <table class="review-presentation">
     <tbody>
 
-
     <!-- WRITEABLE REVIEW:
 
     The writeable review UI changes slightly based on whether this user has or has not already issued
@@ -80,12 +80,6 @@ that review (no matter how old) is displayed as the first one along with a CTA t
     If the user *has* already submitted a review for this product, the UI shows that previously-submitted
     review and the user is allowed to revise and resubmit.
     -->
-
-    <tr ng-if="userHasNotYetReviewed">
-        <td class="buffer" colspan="3" style="padding-top:22px">
-            <b>Hey - you <u>have not yet reviewed</u> this product!  Have you watched this show?</b>
-        </td>
-    </tr>
 
     <tr ng-if="!userHasNotYetReviewed">
 
@@ -125,14 +119,6 @@ that review (no matter how old) is displayed as the first one along with a CTA t
     </tr>
 
 
-
-
-
-    <tr>
-        <td class="buffer" colspan="3" style="padding-top:52px">
-            <b>Below are the most recent 20 reviews made by others:</b>
-        </td>
-    </tr>
 
     <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow | filter:filter_to_only_others()">
