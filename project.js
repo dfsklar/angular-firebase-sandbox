@@ -125,11 +125,44 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 });
             };
 
+            $scope.popupConfirmDelete = function(ev) {
+                // Appending dialog to document.body to cover sidenav in docs app
+                var confirm = $mdDialog.confirm()
+                    .title('Confirm delete')
+                    .textContent('Are you sure you want to delete your rating/commentary?')
+                    .ariaLabel('Confirm delete?')
+                    .targetEvent(ev)
+                    .ok('Please delete!')
+                    .cancel('Do not delete');
+
+                $mdDialog.show(confirm).then(function() {
+                    refThisUserReview.remove();
+                    $scope.declare_this_user_not_yet_reviewed();
+                    $route.reload();
+                }, function() {
+                    ;
+                });
+            };
+
 
             $scope.filter_to_only_others = function() {
                 return function(reviewToTest) {
                     return (reviewToTest.$id != self.key_thisUserReviewOfThisProduct);
                 }
+            };
+
+            $scope.declare_this_user_not_yet_reviewed = function() {
+                $scope.writeableReview = {
+                    comment: "",
+                    headline: "",
+                    rating: 1,
+                    authorName: $scope.user.displayName,
+                    authorEmail: $scope.user.email,
+                    photoURL: $scope.user.photoURL,
+                    uid: $scope.user.uid
+                };
+                $('.review-presentation').css('opacity', '1');
+                $scope.userHasNotYetReviewed = true;
             };
 
             // I need to have both of these "ref"s already loaded in order to do the
@@ -165,17 +198,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                                 $('.review-presentation').css('opacity', '1');
                             }
                             else {
-                                // This user has NOT already reviewed this product!
-                                $scope.writeableReview = {
-                                    comment: "",
-                                    headline: "",
-                                    rating: 1,
-                                    authorName: $scope.user.displayName,
-                                    authorEmail: $scope.user.email,
-                                    photoURL: $scope.user.photoURL,
-                                    uid: $scope.user.uid
-                                };
-                                $('.review-presentation').css('opacity', '1');
+                                $scope.declare_this_user_not_yet_reviewed();
                             }
                         }
                     )

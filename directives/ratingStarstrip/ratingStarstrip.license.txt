@@ -1,5 +1,6 @@
-THIS WAS ADAPTED BY github.com/dfsklar FROM:
+THIS STARSTRIP DIRECTIVE WAS ADAPTED FROM:
     http://github.com/filipetedim/angular-rating-icons
+BY github.com "sklard"
 
 . . . . . .
 

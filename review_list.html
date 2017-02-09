@@ -27,9 +27,9 @@ ELSE:
 -->
 
 <!-- First case:  logged-in user has NOT yet rated -->
-<p ng-if="userHasNotYetReviewed && consensus.average" class="consensus">
+<p ng-if="userHasNotYetReviewed && consensus.average" class="consensus clickable" ng-click="popupReviewDialog($event)">
     <rating-starstrip readonly max="10" decimal ng-if="consensus.average"
-                      color-base="blue" color-selected="blue"
+                      color-base="blue" color-selected="blue" icon-size="20"
                       value="{{consensus.ratingOutOfTen}}" icon-size="16"></rating-starstrip>
     ({{consensus.count}} ratings)
 </p>
@@ -99,7 +99,7 @@ that review (no matter how old) is displayed as the first one along with a CTA t
             Edit
             </md-button>
             <br/>
-            <md-button class="md-primary md-raised" ng-click="popupDeleteConfirmDialog($event)">
+            <md-button class="md-primary md-raised" ng-click="popupConfirmDelete($event)">
                 Delete
             </md-button>
         </td>
