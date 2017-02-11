@@ -8,6 +8,15 @@ td.commentary {
     padding-bottom: 20px;
 }
 
+.clickable {
+    cursor: pointer !important;
+}
+.clickable > .li {
+    cursor: pointer !important;
+}
+.clickable > i {
+    cursor: pointer !important;
+}
 p.headline {
     font-size: 15px;
 }

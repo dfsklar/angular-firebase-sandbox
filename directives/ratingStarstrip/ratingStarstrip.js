@@ -36,6 +36,7 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
             scope.spacing = +attrs.iconSpacing || 5;
             scope.listClass = 'angular-rating-icons';
             scope.readOnly = !(attrs.readonly === undefined);
+            scope.clickable = !(attrs.clickable === undefined);
             scope.decimal = !(attrs.decimal === undefined) ? 'angular-rating-icons-decimal' : undefined;
             scope.productId = attrs.productId;
 
@@ -103,7 +104,7 @@ angular.module('Sklangular').directive('ratingStarstrip', function(){
                 var css = {
                     'font-size': scope.size + 'px',
                     'padding-right': index !== scope.icons.length - 1 ? scope.spacing + 'px' : '0',
-                    'cursor': (scope.readOnly) ? 'normal':'pointer'
+                    'cursor': (scope.readOnly && (!scope.clickable)) ? 'normal':'pointer'
                 };
 
                 if (!scope.decimal) {
