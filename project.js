@@ -73,7 +73,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $route) {
+        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
@@ -110,6 +110,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             self.thisUserReviewKey = $firebaseObject(refThisUserReview);
             // ^^^ This is a promise. And the data located at that ref is the *key* of the review, not the actual review.
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
+
 
 
             $scope.popupReviewDialog = function(ev) {

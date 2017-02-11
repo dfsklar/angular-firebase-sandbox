@@ -99,7 +99,7 @@ that review (no matter how old) is displayed as the first one along with a CTA t
             Edit
             </md-button>
             <br/>
-            <md-button class="md-primary md-raised" ng-click="popupDeleteConfirmDialog($event)">
+            <md-button class="md-raised" ng-click="popupDeleteConfirmDialog($event)">
                 Delete
             </md-button>
         </td>
@@ -119,6 +119,18 @@ that review (no matter how old) is displayed as the first one along with a CTA t
           <!--
           <br/>{{review.time | date:'yyyy-MMM-dd'}}
           <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/> -->
+        </td>
+        <td>
+            <md-menu>
+                <md-button aria-label="Options" class="md-raised" ng-click="$mdMenu.open($event)">
+                    Options
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="flag_this();">Flag</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </td>
     </tr>
 </tbody>
