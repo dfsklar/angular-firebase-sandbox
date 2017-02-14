@@ -277,6 +277,10 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                        $route.reload();
                    });
             };
+
+            $scope.show_comment_UI = function() {
+                $scope.unsavedwriteableReview.intendsToAddComment = true;
+            };
         })
 
 

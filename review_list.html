@@ -173,6 +173,19 @@ that review (no matter how old) is displayed as the first one along with a CTA t
                     <br/>
                     <md-button class="md-raised" ng-click="show_comment_UI();">Comment</md-button>
                 </div>
+
+                <div ng-if="unsavedwriteableReview.intendsToAddComment">
+                    <input class="headline" maxlength="40" type="text" placeholder="Enter a headline/title here" ng-model="unsavedwriteableReview.headline"/>
+                    <br/>
+                    <div ng-if="unsavedwriteableReview.headline.length >= 40" class="charmax-reached">40 characters maximum!</div>
+                    <textarea style="width:350px;height:220px" maxlength="1000" ng-trim="false"
+                              placeholder="Enter your commentary here."
+                              ng-model="unsavedwriteableReview.comment"></textarea>
+                    <div class="charcounter">{{1000 - unsavedwriteableReview.comment.length}} characters remaining</div>
+                    <br/>
+                    <md-button class="md-primary md-raised" ng-click="submit();">Rate</md-button>
+                </div>
+
             </div>
         </div>
     </md-dialog-content>
