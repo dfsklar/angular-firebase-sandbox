@@ -107,7 +107,7 @@ that review (no matter how old) is displayed as the first one along with a CTA t
 
 
 
-    <!-- this reference to controller.xxxx is satisfied by the controller's "this.xxxx" not be the $scope! -->
+    <!-- this reference to controller.reviewsToShow is satisfied by the controller's "this.xxxx" not by the $scope! -->
     <tr ng-repeat="review in reviewlistCTRLR.reviewsToShow | filter:filter_to_only_others()">
         <td class="commentary">
             <rating-starstrip readonly value="{{review.rating}}"></rating-starstrip>
@@ -121,13 +121,14 @@ that review (no matter how old) is displayed as the first one along with a CTA t
           <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/> -->
         </td>
         <td class="comblock-control-holder">
+            {{ mapReviewidToFlag[review.$id] }}
             <md-menu class="menu-comblock-options" md-position-mode="target-right bottom" md-offset="0 0">
                 <md-button md-menu-origin aria-label="Options" class="md-raised" ng-click="$mdOpenMenu();">
                     Options
                 </md-button>
                 <md-menu-content class="md-menu-content">
-                    <md-menu-item ng-if="!review.flagged" ng-click="toggle_flag(review)"><div md-menu-align-target >Flag as Inappropriate</div></md-menu-item>
-                    <md-menu-item ng-if="review.flagged" ng-click="toggle_flag(review)"><div md-menu-align-target >Remove inappropriate flag</div></md-menu-item>
+                    <md-menu-item ng-if="!review.flagged" ng-click="add_flag(review)"><div md-menu-align-target >Flag as Inappropriate</div></md-menu-item>
+                    <md-menu-item ng-if="review.flagged" ng-click="remove_flag(review)"><div md-menu-align-target >Remove inappropriate flag</div></md-menu-item>
                 </md-menu-content>
             </md-menu>
         </td>

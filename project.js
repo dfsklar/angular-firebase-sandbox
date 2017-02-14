@@ -18,6 +18,19 @@ window.sklangular = {
     }
 };
 
+/*
+
+ABOUT THE FIREBASE STRUCTURE:
+
+   users:
+      {userID}:
+         {prodID}: commblockID
+
+   flags:
+      {userID}:
+         {commblockID}: true   << the value is meaningless.  It is the presence of this value that means it was flagged.
+
+*/
 
 
 angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
@@ -73,12 +86,12 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route) {
+        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
             $scope.productID = $routeParams.productID;
-            $scope.user = window.logged_in_user;
+            $scope.user = window.logged_in_user;  // This is an object with fields such as uid, etc.
 
             var self = this;
 
@@ -88,20 +101,16 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // Notice that the ref can be sent through limitToLast at the tail end.
             var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child($scope.productID);
             var refStatsForThisProduct = firebase.database().ref('stats').child($scope.productID);
-            var refReviewsToShow = refAllReviewsOfThisProduct.limitToLast(20);
-            // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
+            var refFlagsFromThisLoggedinUser = firebase.database().ref('flags').child($scope.user.uid);
+            var refReviewsToShow = refAllReviewsOfThisProduct.limitToLast(20); // << promise
+
+            self.flagsFromThisLoggedinUser = $firebaseArray(refFlagsFromThisLoggedinUser);  // << this is a promise!
+
             // Notice that here is where I'm doing the reversal of order.
             self.reviewsToShow = $firebaseArray(refReviewsToShow).reverse();
             // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
             self.statsForThisProduct = $firebaseObject(refStatsForThisProduct);
-
-            self.statsForThisProduct.$loaded(
-                function (loadedStats) {
-                    $scope.consensus = loadedStats;
-                    $scope.consensus.ratingOutOfTen = Math.round(loadedStats.average*2);
-                    $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
-                }
-            );
+            // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
 
             // We can use this user's own index of all reviews he/she have contributed to determine whether
             // this user has ever reviewed *this* product.
@@ -112,8 +121,11 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
 
 
-            $scope.toggle_flag = function(rvu) {
-                alert(x);
+            $scope.add_flag = function(rvu) {
+                idReview = rvu.$id;
+                $scope.mapReviewidToFlag[idReview] = true;
+                var new_chunk = refFlagsFromThisLoggedinUser.push();
+                new_chunk.set(true);
             };
 
             $scope.popupReviewDialog = function(ev) {
@@ -170,44 +182,46 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 $scope.userHasNotYetReviewed = true;
             };
 
-            // I need to have both of these "ref"s already loaded in order to do the
+            // I need to have all of these "ref"s already loaded in order to do the
             // work to:
             // 1) identify whether this user has already reviewed this product
             // 2) isolate that particular review so it does not appear in the read-only list of "other reviews".
-            // So I must use $loaded twice:
-            self.reviewsToShow.$loaded(
-                function(reviewsLoaded) {
-                    self.loadedReviewsToShow = reviewsLoaded;
-                    self.thisUserReviewKey.$loaded(
-                        function(thisUserReviewLoaded) {
-                            self.key_thisUserReviewOfThisProduct = thisUserReviewLoaded.$value;
-                            $scope.key_thisUserReviewOfThisProduct = self.key_thisUserReviewOfThisProduct;
-                            if (self.key_thisUserReviewOfThisProduct) {
-                                // If we get here, this user *has* indeed already reviewed this very product.
-                                // One more firebase load will give us that particular review:
-                                $scope.userHasNotYetReviewed = false;
-                                self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(self.key_thisUserReviewOfThisProduct));
-                                self.thisUserReviewOfThisProduct.$loaded(
-                                    function(x) {
-                                        $scope.writeableReview = {
-                                            intendsToAddComment: (x.comment!='' || x.headline!=''),
-                                            comment: x.comment,
-                                            headline: x.headline,
-                                            rating: x.rating,
-                                            time: x.time,
-                                            photoURL: x.photoURL,
-                                            authorName: x.authorName,
-                                            authorEmail: x.authorEmail
-                                        };
-                                    }
-                                )
-                                $('.review-presentation').css('opacity', '1');
+            // 3) determine which reviews this user has flagged
+            // So I must use $loaded thrice:
+            $q.all( [
+                self.statsForThisProduct.$loaded(), self.reviewsToShow.$loaded(),
+                self.thisUserReviewKey.$loaded(), self.flagsFromThisLoggedinUser.$loaded()
+            ] ).then (function() {
+                    $scope.consensus = self.statsForThisProduct;
+                    $scope.consensus.ratingOutOfTen = Math.round($scope.consensus.average*2);
+                    $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
+                    self.loadedReviewsToShow = self.reviewsToShow;
+                    self.key_thisUserReviewOfThisProduct = self.thisUserReviewKey.$value;
+                    $scope.key_thisUserReviewOfThisProduct = self.key_thisUserReviewOfThisProduct;
+                    if (self.key_thisUserReviewOfThisProduct) {
+                        // If we get here, this user *has* indeed already reviewed this very product.
+                        // One more firebase load will give us that particular review:
+                        $scope.userHasNotYetReviewed = false;
+                        self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(self.key_thisUserReviewOfThisProduct));
+                        self.thisUserReviewOfThisProduct.$loaded(
+                            function(x) {
+                                $scope.writeableReview = {
+                                    intendsToAddComment: (x.comment!='' || x.headline!=''),
+                                    comment: x.comment,
+                                    headline: x.headline,
+                                    rating: x.rating,
+                                    time: x.time,
+                                    photoURL: x.photoURL,
+                                    authorName: x.authorName,
+                                    authorEmail: x.authorEmail
+                                };
                             }
-                            else {
-                                $scope.declare_this_user_not_yet_reviewed();
-                            }
-                        }
-                    )
+                        );
+                        $('.review-presentation').css('opacity', '1');
+                    }
+                    else {
+                        $scope.declare_this_user_not_yet_reviewed();
+                    }
                 }
             );
 
