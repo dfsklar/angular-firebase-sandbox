@@ -157,6 +157,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
 
             $scope.declare_this_user_not_yet_reviewed = function() {
                 $scope.writeableReview = {
+                    intendsToAddComment: false,
                     comment: "",
                     headline: "",
                     rating: -1,
@@ -189,6 +190,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                                 self.thisUserReviewOfThisProduct.$loaded(
                                     function(x) {
                                         $scope.writeableReview = {
+                                            intendsToAddComment: (x.comment!='' || x.headline!=''),
                                             comment: x.comment,
                                             headline: x.headline,
                                             rating: x.rating,
@@ -221,6 +223,14 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 }, function(error) {
                    $window.alert("Logout failed.");
                 });
+            };
+
+            $scope.submit = function() {
+                if ($scope.userHasNotYetReviewed) {
+                    $scope.push_review_to_server();
+                } else {
+                    $scope.update_review();
+                }
             };
 
             $scope.push_review_to_server = function() {
