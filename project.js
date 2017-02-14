@@ -112,6 +112,9 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
 
 
+            $scope.hello = function(ev) {
+              $mdMenu.show(ev);
+            };
 
             $scope.popupReviewDialog = function(ev) {
                 $scope.unsavedwriteableReview = jQuery.extend({}, $scope.writeableReview);  // shallow copy
@@ -156,7 +159,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 $scope.writeableReview = {
                     comment: "",
                     headline: "",
-                    rating: 1,
+                    rating: -1,
                     authorName: $scope.user.displayName,
                     authorEmail: $scope.user.email,
                     photoURL: $scope.user.photoURL,

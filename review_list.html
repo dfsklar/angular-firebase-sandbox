@@ -122,7 +122,7 @@ that review (no matter how old) is displayed as the first one along with a CTA t
         </td>
         <td>
             <md-menu>
-                <md-button aria-label="Options" class="md-raised" ng-click="$mdMenu.open($event)">
+                <md-button aria-label="Options" class="md-raised" ng-click="hello($event)">
                     Options
                 </md-button>
                 <md-menu-content width="4">
@@ -154,7 +154,17 @@ that review (no matter how old) is displayed as the first one along with a CTA t
     <md-dialog-content>
         <div class="md-dialog-content" style="text-align:center">
             <p>RATING</p>
-        <rating-starstrip ng-model='unsavedwriteableReview.rating' ng-if='unsavedwriteableReview.rating' value="{{unsavedwriteableReview.rating}}"></rating-starstrip>
+
+            <div ng-if="unsavedwriteableReview.rating < 1">
+                <rating-starstrip ng-model='unsavedwriteableReview.rating'
+                                  color-base="blue" color-selected="blue"
+                                  value="0" unifew="{{unsavedwriteableReview.rating}}"></rating-starstrip>
+            </div>
+            <div ng-if="unsavedwriteableReview.rating >= 0">
+                  <rating-starstrip ng-model='unsavedwriteableReview.rating'
+                          ng-if='unsavedwriteableReview.rating'
+                          value="{{unsavedwriteableReview.rating}}"></rating-starstrip>
+            </div>
                 <br/>
             <input class="headline" maxlength="40" type="text" placeholder="Enter a headline/title here" ng-model="unsavedwriteableReview.headline"/>
             <br/>
