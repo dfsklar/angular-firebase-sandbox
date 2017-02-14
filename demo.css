@@ -59,6 +59,10 @@ hr.slender {
     margin-bottom: 12px;
 }
 
+.md-menu-content {
+    cursor: pointer;
+}
+
 .charmax-reached {
     margin-top: -3px;
     padding-bottom: 9px;

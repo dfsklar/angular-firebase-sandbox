@@ -131,6 +131,12 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
                 self.refFlagsFromThisLoggedinUser.child(idReview).set(true);
             };
 
+            $scope.remove_flag = function(rvu) {
+                idReview = rvu.$id;
+                rvu.flagged = false;
+                self.refFlagsFromThisLoggedinUser.child(idReview).remove();
+            };
+
             $scope.popupReviewDialog = function(ev) {
                 $scope.unsavedwriteableReview = jQuery.extend({}, $scope.writeableReview);  // shallow copy
                 $mdDialog.show({

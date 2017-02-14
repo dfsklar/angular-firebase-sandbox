@@ -94,7 +94,7 @@ that review (no matter how old) is displayed as the first one along with a CTA t
             <!-- <br/>{{writeableReview.time | date:'yyyy-MMM-dd'}} -->
             <!-- <br/><img class='photo-of-commenter' width=24 src="{{writeableReview.photoURL}}"/> -->
         </td>
-        <td>
+        <td class="comblock-control-holder">
             <md-button class="md-primary md-raised" ng-click="popupReviewDialog($event)">
             Edit
             </md-button>
@@ -122,7 +122,6 @@ that review (no matter how old) is displayed as the first one along with a CTA t
           <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/> -->
         </td>
         <td class="comblock-control-holder">
-            {{ review.flagged }}
             <md-menu class="menu-comblock-options" md-position-mode="target-right bottom" md-offset="0 0">
                 <md-button md-menu-origin aria-label="Options" class="md-raised" ng-click="$mdOpenMenu();">
                     Options
