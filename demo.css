@@ -8,6 +8,19 @@ td.commentary {
     padding-bottom: 20px;
 }
 
+
+.md-menu-content {
+    padding: 0px;
+}
+
+
+td.comblock-control-holder {
+    min-width: 200px;
+    text-align: right;
+}
+
+
+
 .clickable {
     cursor: pointer !important;
 }

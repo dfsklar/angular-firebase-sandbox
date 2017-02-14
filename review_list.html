@@ -120,15 +120,14 @@ that review (no matter how old) is displayed as the first one along with a CTA t
           <br/>{{review.time | date:'yyyy-MMM-dd'}}
           <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/> -->
         </td>
-        <td>
-            <md-menu>
-                <md-button aria-label="Options" class="md-raised" ng-click="hello($event)">
+        <td class="comblock-control-holder">
+            <md-menu class="menu-comblock-options" md-position-mode="target-right bottom" md-offset="0 0">
+                <md-button md-menu-origin aria-label="Options" class="md-raised" ng-click="$mdOpenMenu();">
                     Options
                 </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="flag_this();">Flag</md-button>
-                        </md-menu-item>
+                <md-menu-content class="md-menu-content">
+                    <md-menu-item ng-if="!review.flagged" ng-click="toggle_flag(review)"><div md-menu-align-target >Flag as Inappropriate</div></md-menu-item>
+                    <md-menu-item ng-if="review.flagged" ng-click="toggle_flag(review)"><div md-menu-align-target >Remove inappropriate flag</div></md-menu-item>
                 </md-menu-content>
             </md-menu>
         </td>

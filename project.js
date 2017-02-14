@@ -112,8 +112,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
 
 
-            $scope.hello = function(ev) {
-              $mdMenu.show(ev);
+            $scope.toggle_flag = function(rvu) {
+                alert(x);
             };
 
             $scope.popupReviewDialog = function(ev) {
