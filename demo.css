@@ -67,6 +67,12 @@ hr.slender {
     color: red;
 }
 
+.flagged {
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+}
+
 p.consensus .average {
     font-size: 18px;
 }
