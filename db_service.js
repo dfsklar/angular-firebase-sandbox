@@ -84,13 +84,11 @@ ABOUT THE FIREBASE STRUCTURE:
                     flagsFromThisLoggedinUser.$loaded()
                 ] ).then (function() {
                     var RETVAL = {
-                        averageStarRating: statsForThisProduct.average,
+                        consensus: statsForThisProduct,
                         reviewsToShow: reviewsToShow,
                         key_thisUserReviewOfThisProduct: thisUserReviewKey.$value,
                         userHasAlreadyReviewed: false
                     };
-                    //    $scope.consensus.ratingOutOfTen = Math.round($scope.consensus.average*2);
-                    //    $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
                     var loadedReviewsToShow = reviewsToShow;
                     RETVAL.reviewsToShow.forEach(function(x){
                         var s = flagsFromThisLoggedinUser.$getRecord(x.$id);
@@ -103,7 +101,7 @@ ABOUT THE FIREBASE STRUCTURE:
                         RETVAL.userHasAlreadyReviewed = true;
                         // If we get here, this user *has* indeed already reviewed this very product.
                         // One more firebase load will give us that particular review:
-                        var thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(self.key_thisUserReviewOfThisProduct));
+                        var thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(RETVAL.key_thisUserReviewOfThisProduct));
                         thisUserReviewOfThisProduct.$loaded(
                             function(x) {
                                 RETVAL.thisUserReview = {

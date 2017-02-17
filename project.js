@@ -58,13 +58,12 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
          the page will be shown at all.
          The controller will be given the info, already fetched.  Simple controller!
          This is an alternative to having a controller that has to go out and fetch the data.
-
-         The resolve value must be set to an angular module's ".config" function's variable with that name.
+         (The resolve value must be set to an angular module's ".config" function's variable with that name.)
 
          BUT: this means the start of page display is delayed, and this may not be acceptable
          if it is instead desired that a page *portion* be delayed.
 
-         I'm going to try having NO resolve condition for the "list" fucker and instead have the controller
+         I'm going to try having NO resolve condition for the "list" and instead have the controller
          do the actual fetching.
          */
         $routeProvider
@@ -75,7 +74,6 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
                 // Will not work if you don't but not sure why.
                 controller: 'ReviewListController as reviewlistCTRLR',
                 templateUrl: 'review_list.html'
-
             })
 
             .when('/product_list', {
@@ -90,7 +88,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
 
 
-    // This is a good "promissory" controller that does a firebase fetch and waits for
+    // This is a good "promise-based" controller that does a fetch (from a db-wrapping service) and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
         function ($scope, ProRater_DBOp, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
@@ -106,7 +104,18 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
             ProRater_DBOp.fetchProduct($scope.productID, $scope.user.uid).then(
                 function(data) {
-                    console.log(data);
+                    // We now have all of the data needed for this display of ratings/notes
+                    $scope.consensus = data.consensus;
+                    $scope.consensus.ratingOutOfTen = Math.round($scope.consensus.average*2);
+                    $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
+                    $scope.reviewsToShow = data.reviewsToShow;
+                    $scope.key_thisUserReviewOfThisProduct = data.key_thisUserReviewOfThisProduct;
+                    $scope.userHasNotYetReviewed =  ! data.userHasAlreadyReviewed;
+                    if ($scope.userHasNotYetReviewed) {
+                        $scope.declare_this_user_not_yet_reviewed();
+                    } else {
+                        $('.review-presentation').css('opacity', '1');
+                    }
                 },
                 function(data) {
                     console.log('err');
@@ -179,58 +188,6 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
                 $('.review-presentation').css('opacity', '1');
                 $scope.userHasNotYetReviewed = true;
             };
-
-            // I need to have all of these "ref"s already loaded in order to do the
-            // work to:
-            // 1) identify whether this user has already reviewed this product
-            // 2) isolate that particular review so it does not appear in the read-only list of "other reviews".
-            // 3) determine which reviews this user has flagged
-            // So I must use $loaded thrice:
-            $q.all( [
-                self.statsForThisProduct.$loaded(),
-                self.reviewsToShow.$loaded(),
-                self.thisUserReviewKey.$loaded(),
-                self.flagsFromThisLoggedinUser.$loaded()
-            ] ).then (function() {
-                    $scope.consensus = self.statsForThisProduct;
-                    $scope.consensus.ratingOutOfTen = Math.round($scope.consensus.average*2);
-                    $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
-                    self.loadedReviewsToShow = self.reviewsToShow;
-                    self.loadedReviewsToShow.forEach(function(x){
-                        var s = self.flagsFromThisLoggedinUser.$getRecord(x.$id);
-                        if (s) {
-                            // Basically this is the execution of a JOIN
-                            x.flagged = true;
-                        }
-                    });
-                    self.key_thisUserReviewOfThisProduct = self.thisUserReviewKey.$value;
-                    $scope.key_thisUserReviewOfThisProduct = self.key_thisUserReviewOfThisProduct;
-                    if (self.key_thisUserReviewOfThisProduct) {
-                        // If we get here, this user *has* indeed already reviewed this very product.
-                        // One more firebase load will give us that particular review:
-                        $scope.userHasNotYetReviewed = false;
-                        self.thisUserReviewOfThisProduct = $firebaseObject(refAllReviewsOfThisProduct.child(self.key_thisUserReviewOfThisProduct));
-                        self.thisUserReviewOfThisProduct.$loaded(
-                            function(x) {
-                                $scope.writeableReview = {
-                                    intendsToAddComment: (x.comment!='' || x.headline!=''),
-                                    comment: x.comment,
-                                    headline: x.headline,
-                                    rating: x.rating,
-                                    time: x.time,
-                                    photoURL: x.photoURL,
-                                    authorName: x.authorName,
-                                    authorEmail: x.authorEmail
-                                };
-                            }
-                        );
-                        $('.review-presentation').css('opacity', '1');
-                    }
-                    else {
-                        $scope.declare_this_user_not_yet_reviewed();
-                    }
-                }
-            );
 
 
 
