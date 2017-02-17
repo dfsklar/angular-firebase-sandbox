@@ -1,6 +1,6 @@
 angular.module('ProRater_DBService', [])
-    .factory('ProRater_DBOp', ['firebase',
-    function(firebase) {
+    .factory('ProRater_DBOp', ['firebase', '$firebaseArray', '$firebaseObject', '$q',
+    function(firebase, $firebaseArray, $firebaseObject, $q) {
         var ProRater_DBOp = {};
 
 
@@ -46,12 +46,12 @@ ABOUT THE FIREBASE STRUCTURE:
         }
 
 */
-        ProRater_DBOp.fetchProduct = function(productID) {
+        ProRater_DBOp.fetchProduct = function(productID, userID) {
             // Ref to the bucket of all reviews for this product.
             // Notice that the ref can be sent through limitToLast at the tail end.
-            var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child($scope.productID);
-            var refStatsForThisProduct = firebase.database().ref('stats').child($scope.productID);
-            var refFlagsFromThisLoggedinUser = firebase.database().ref('flags').child($scope.user.uid);
+            var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child(productID);
+            var refStatsForThisProduct = firebase.database().ref('stats').child(productID);
+            var refFlagsFromThisLoggedinUser = firebase.database().ref('flags').child(userID);
             var refReviewsToShow = refAllReviewsOfThisProduct.limitToLast(20); // << promise
 
             var flagsFromThisLoggedinUser = $firebaseArray(refFlagsFromThisLoggedinUser);  // << this is a promise!
@@ -65,7 +65,7 @@ ABOUT THE FIREBASE STRUCTURE:
             // We can use this user's own index of all reviews he/she have contributed to determine whether
             // this user has ever reviewed *this* product.
             // Again, this is only a promise!
-            var refThisUserReview = firebase.database().ref('users').child($scope.user.uid).child($scope.productID);
+            var refThisUserReview = firebase.database().ref('users').child(userID).child(productID);
             var thisUserReviewKey = $firebaseObject(refThisUserReview);
             // ^^^ This is a promise. And the data located at that ref is the *key* of the review, not the actual review.
             // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
@@ -76,8 +76,8 @@ ABOUT THE FIREBASE STRUCTURE:
             // 2) isolate that particular review so it does not appear in the read-only list of "other reviews".
             // 3) determine which reviews this user has flagged
             // So I must use $loaded thrice:
-            return $q((resolve, reject) => {
-                return $q.all( [
+            var promise = $q.defer();
+            $q.all( [
                     statsForThisProduct.$loaded(),
                     reviewsToShow.$loaded(),
                     thisUserReviewKey.$loaded(),
@@ -116,17 +116,16 @@ ABOUT THE FIREBASE STRUCTURE:
                                     authorName: x.authorName,
                                     authorEmail: x.authorEmail
                                 };
-                                resolve(RETVAL);
+                                promise.resolve(RETVAL);
                             }
                         );
                     } else {
-                        resolve(RETVAL);
+                        promise.resolve(RETVAL);
                     }
                 }
-            );
-            }
-                     );
-        };
+                );
+            return promise.promise;
+        }
 
 
         return ProRater_DBOp;

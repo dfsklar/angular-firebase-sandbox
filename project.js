@@ -104,29 +104,15 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
             $scope.userHasNotYetReviewed = true;
 
-            // Ref to the bucket of all reviews for this product.
-            // Notice that the ref can be sent through limitToLast at the tail end.
-            var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child($scope.productID);
-            var refStatsForThisProduct = firebase.database().ref('stats').child($scope.productID);
-            self.refFlagsFromThisLoggedinUser = firebase.database().ref('flags').child($scope.user.uid);
-            var refReviewsToShow = refAllReviewsOfThisProduct.limitToLast(20); // << promise
-
-            self.flagsFromThisLoggedinUser = $firebaseArray(self.refFlagsFromThisLoggedinUser);  // << this is a promise!
-
-            // Notice that here is where I'm doing the reversal of order.
-            self.reviewsToShow = $firebaseArray(refReviewsToShow).reverse();
-            // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
-            self.statsForThisProduct = $firebaseObject(refStatsForThisProduct);
-            // ^^^^^^^^^^^^ This is only a promise; the data will not have been loaded yet!
-
-            // We can use this user's own index of all reviews he/she have contributed to determine whether
-            // this user has ever reviewed *this* product.
-            // Again, this is only a promise!
-            var refThisUserReview = firebase.database().ref('users').child($scope.user.uid).child($scope.productID);
-            self.thisUserReviewKey = $firebaseObject(refThisUserReview);
-            // ^^^ This is a promise. And the data located at that ref is the *key* of the review, not the actual review.
-            // This key would be used as a child positioner into "refAllReviewsOfThisProduct".
-
+            ProRater_DBOp.fetchProduct($scope.productID, $scope.user.uid).then(
+                function(data) {
+                    console.log(data);
+                },
+                function(data) {
+                    console.log('err');
+                    console.log(data);
+                }
+            );
 
             $scope.add_flag = function(rvu) {
                 idReview = rvu.$id;
