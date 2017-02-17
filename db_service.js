@@ -134,7 +134,12 @@ ABOUT THE FIREBASE STRUCTURE:
             // Step 1:  remove the "key" storage that makes up the pre-cached index mapping userID to reviewID 
             firebase.database().ref('users').child(userID).child(productID).remove();
             // Step 2: remove the actual review.
-            firebase.database().ref('reviewchunks').child(productID).child(reviewID).remove();
+            firebase.database().ref('reviewchunks').child(productID).child(reviewID).remove().then(
+                function(ref) {
+                    ProRater_DBOp.calcConsensus(productID, null);
+                },
+                function(error){}
+            );
         };
 
 
@@ -153,18 +158,25 @@ ABOUT THE FIREBASE STRUCTURE:
             });
         };
         
+        // NOT SCALABLE!  This client-side calc is not optimal.  In a real-world scenario,
+        // this service talks to a mid-tier layer server-side and the consensus maintenance is located therein.
         ProRater_DBOp.calcConsensus = function(productID) {
             var refAllReviewsOfThisProduct = firebase.database().ref('reviewchunks').child(productID);
             var fbaAllReviews = $firebaseArray(refAllReviewsOfThisProduct);
+            var refStatsForThisProduct = firebase.database().ref('stats').child(productID);
             fbaAllReviews.$loaded(
                 function(allReviewsLoaded) {
                     var sum = 0;
                     var count = (allReviewsLoaded.length);
-                    allReviewsLoaded.forEach(function(oneReview) {
-                        sum += oneReview.rating;
-                     });
-                    refStatsForThisProduct.child('average').set(sum/count);
                     refStatsForThisProduct.child('count').set(count);
+                    if (count == 0) {
+                        refStatsForThisProduct.child('average').set(3);
+                    } else {
+                        allReviewsLoaded.forEach(function(oneReview) {
+                            sum += oneReview.rating;
+                        });
+                        refStatsForThisProduct.child('average').set(sum/count);
+                    }
                     if (cbCompletion) {
                         cbCompletion();
                     }
@@ -197,7 +209,7 @@ ABOUT THE FIREBASE STRUCTURE:
             refThisUserReview.set(chunk_uuid);
 
             // Update average in the background
-            ProRater_DBOp.calcAverage(productID, null);
+            ProRater_DBOp.calcConsensus(productID, null);
             return chunk_uuid;
         };
 
