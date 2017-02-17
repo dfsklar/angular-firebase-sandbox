@@ -172,7 +172,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
             $scope.filter_to_only_others = function() {
                 return function(reviewToTest) {
-                    return (reviewToTest.$id != self.key_thisUserReviewOfThisProduct);
+                    return (reviewToTest.$id != $scope.key_thisUserReviewOfThisProduct);
                 }
             };
 
@@ -224,17 +224,16 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
             $scope.update_review = function() {
                 $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy
+                ProRater_DBOp.updateReview($scope.productID, $scope.key_thisUserReviewOfThisProduct, $scope.writeableReview);
+              /*
                 self.thisUserReviewOfThisProduct.headline = $scope.writeableReview.headline;
                 self.thisUserReviewOfThisProduct.comment = $scope.writeableReview.comment;
                 self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
                 self.thisUserReviewOfThisProduct.time = Date.now();
                 self.thisUserReviewOfThisProduct.$save();
-                // Update average
+                */
                 $mdDialog.hide();
-                window.sklangular.calcAverage($firebaseArray, refAllReviewsOfThisProduct, refStatsForThisProduct,
-                   function() {
-                       $route.reload();
-                   });
+                $route.reload();
             };
 
             $scope.show_comment_UI = function() {
