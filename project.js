@@ -109,6 +109,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
                     $scope.consensus.ratingOutOfTen = Math.round($scope.consensus.average*2);
                     $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
                     $scope.reviewsToShow = data.reviewsToShow;
+                    self.reviewsToShow = data.reviewsToShow;  // !!! BIZARRE: ng-repeat uses self not $scope.  WHY?
                     $scope.key_thisUserReviewOfThisProduct = data.key_thisUserReviewOfThisProduct;
                     $scope.userHasNotYetReviewed =  ! data.userHasAlreadyReviewed;
                     if ($scope.userHasNotYetReviewed) {
