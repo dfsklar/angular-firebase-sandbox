@@ -18,6 +18,9 @@ window.sklangular = {
     }
 };
 
+
+
+
 /*
 
 ABOUT THE FIREBASE STRUCTURE:
@@ -37,7 +40,7 @@ ABOUT THE FIREBASE STRUCTURE:
 */
 
 
-angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
+angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService'])
 
     .value('fbURL', 'https://angularsandbox-640d4.firebaseio.com/')
 
@@ -90,7 +93,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial'])
     // This is a good "promissory" controller that does a firebase fetch and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
-        function ($scope, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
+        function ($scope, ProRater_DBOp, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
