@@ -88,7 +88,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
 
 
-    // This is a good "promise-based" controller that does a fetch (from a db-wrapping service) and waits for
+    // This is a "promise-based" controller that does a fetch (from a db-wrapping service) and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ReviewListController',
         function ($scope, ProRater_DBOp, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
@@ -108,6 +108,7 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
                     $scope.consensus = data.consensus;
                     $scope.consensus.ratingOutOfTen = Math.round($scope.consensus.average*2);
                     $scope.consensus.ratingOutOfFive = $scope.consensus.ratingOutOfTen / 2;
+                    $scope.writeableReview =  jQuery.extend({}, data.thisUserReview);  // shallow copy
                     $scope.reviewsToShow = data.reviewsToShow;
                     self.reviewsToShow = data.reviewsToShow;  // !!! BIZARRE: ng-repeat uses self not $scope.  WHY?
                     $scope.key_thisUserReviewOfThisProduct = data.key_thisUserReviewOfThisProduct;
