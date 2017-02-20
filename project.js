@@ -198,9 +198,8 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
             $scope.push_review_to_server = function() {
                 $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy
                 $scope.userHasNotYetReviewed = false;  // Do this immediately to lock out ability to submit more than once accidentally.
-                ProRater_DBOp.addReview($scope.productID, $scope.user, $scope.writeableReview);
+                $scope.key_thisUserReviewOfThisProduct = ProRater_DBOp.addReview($scope.productID, $scope.user, $scope.writeableReview);
                 $mdDialog.hide();
-                $route.reload();
             };
 
 
