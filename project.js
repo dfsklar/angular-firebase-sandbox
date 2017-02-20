@@ -1,22 +1,4 @@
-window.sklangular = {
-    calcAverage: function($firebaseArray, refAllReviews, refStatsForThisProduct, cbCompletion) {
-        var fbaAllReviews = $firebaseArray(refAllReviews);
-        fbaAllReviews.$loaded(
-            function(allReviewsLoaded) {
-                var sum = 0;
-                var count = (allReviewsLoaded.length);
-                allReviewsLoaded.forEach(function(oneReview) {
-                    sum += oneReview.rating;
-                });
-                refStatsForThisProduct.child('average').set(sum/count);
-                refStatsForThisProduct.child('count').set(count);
-                if (cbCompletion) {
-                    cbCompletion();
-                }
-            }
-        );
-    }
-};
+
 
 
 
