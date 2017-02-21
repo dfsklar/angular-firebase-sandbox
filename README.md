@@ -83,6 +83,13 @@ use the file `service_db_firebase.js` as-is.  However, be aware that because thi
 The preferred method for scalability and security is to adapt `service_db_firebase.js` to have it use a protocol such as AJAX to read/write via secured, authenticaed communication with a server.  That JS file has good commentary on all the public endpoints required; obviously, its API is mostly about adding/editing/removing commentblocks and is quite straightforward.
 
 
+### The templating
 
+With all of the above (components and services), you have the browser-resident "backend" ready to go.  Now comes the placement of the ProRater UX on your pages.
 
+Here you'll want to open up `demo_template_productpage.html` and look for the clearly marked "page areas".  You'll be wanting to lift these page areas and paste them into the HTML Angular template that you're constructing to represent your product / inventory item page.
+
+One of the page areas is a dialog popup (at the very bottom of that demo template).  Here you'll see that I'm using 
+an open-source package called "Angular Material" to provide the nice-looking dialog popup.  Feel free to replace this page
+block with the dialog framework of your choice, but be aware you'll need to "rewire" the dialog popup/closedown UI yourself.
 
