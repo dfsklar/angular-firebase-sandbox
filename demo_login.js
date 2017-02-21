@@ -5,23 +5,38 @@
 window.ANGLAPP = angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService', 'ProRater_UserService']);
 
 
-function bootstrapAngular(authenticatedUserData) {
+function bootstrapAngular(authenticatedUserData, logoutFunc) {
     window.logged_in_user = authenticatedUserData;
     angular.module('ProRater_UserService').run(['ProRater_UserOp', function(service) {
         service.setUser(authenticatedUserData);
+        service.registerLogoutCallback(logoutFunc);
     }]);
     angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService", "ProRater_UserService"]);
 }
+
+
+
 
 
 function initApp() {
 
     var COOKIENAME = "prorater_logged_in_user";
 
+    function logout() {
+                Cookies.remove(COOKIENAME);
+                firebase.auth().signOut().then(function() {
+                    window.location.href = ('/');
+                    // Sign-out was successful.
+                }, function(error) {
+                    alert("Logout failed - firebase not responding as expected.");
+                });
+    }
+
+
     // If cookie present, the user is already logged-in
     logged_in_user = Cookies.getJSON(COOKIENAME);
     if (logged_in_user) {
-        bootstrapAngular(logged_in_user);
+        bootstrapAngular(logged_in_user, logout);
         return;
     }
 
@@ -49,7 +64,7 @@ function initApp() {
         };
         // Looks like cookies.set already handles JSON:  logged_in_user_as_json = JSON.stringify(user_metadata);
         Cookies.set(COOKIENAME, user_data, { expires : 1/*days*/ });
-        bootstrapAngular(user_data);
+        bootstrapAngular(user_data, logout);
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;

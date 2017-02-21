@@ -126,13 +126,7 @@ window.ANGLAPP
             // HANDLERS
 
             $scope.doLogout = function() {
-                Cookies.remove("sklangular_logged_in_user");
-                firebase.auth().signOut().then(function() {
-                    $window.location = ('/angular-firebase-sandbox');
-                    // Sign-out was successful.
-                }, function(error) {
-                   $window.alert("Logout failed.");
-                });
+                ProRater_UserOp.logout();
             };
 
             $scope.submit = function() {

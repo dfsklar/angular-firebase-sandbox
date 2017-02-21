@@ -6,6 +6,7 @@ angular.module('ProRater_UserService', [])
         var ProRater_UserOp = {};
 
         var current_user = null;
+        var registered_logout_callback = null;
 
         ProRater_UserOp.setUser = function(userinfo) {
             // The main requirement regarding the contents of the userInfo hashmap is this:
@@ -18,11 +19,30 @@ angular.module('ProRater_UserService', [])
             current_user = userinfo;
         };
 
+        /*
+        It is up to the surrounding application to keep track of whether a user is logged-in
+        and keep users away from review presentations/UX if indeed not logged-in.
+        The surrounding application also is responsible for all login/logout UX and backend.
+        Thus this service has no "unsetUser" endpoint, and this service expects the 
+        app to have registered a function for logout, that controllers using this service
+        can invoke indirectly if it is desired to use Angular to provide the logout "button".
+        */
+        ProRater_UserOp.registerLogoutCallback = function(logoutFunc) {
+            registered_logout_callback = logoutFunc;
+        };
+        ProRater_UserOp.logout = function() {
+            if (registered_logout_callback) {
+                registered_logout_callback();
+            }
+        };
+
         ProRater_UserOp.getUserInfo = function() {
             // The return value will have this structure:
             // {  uid: _____, meta: { K: V, K: V, ... }
             return current_user;
         };
+
+
 
         return ProRater_UserOp;
     }
