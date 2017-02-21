@@ -1,4 +1,4 @@
-# ProRater -- Angular 
+# ProRater (Angular Edition) 
 
 ## What this does for you
 
