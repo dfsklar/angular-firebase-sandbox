@@ -23,7 +23,7 @@ window.ANGLAPP
     // This is a "promise-based" controller that does a fetch (from a db-wrapping service) and waits for
     // the result before setting its this.projects which is being watched by the GUI.
     .controller('ProRater_Controller_ReviewPrez',
-        function ($scope, ProRater_DBOp, ProRater_UserOp, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
+        function ($scope, ProRater_DBOp, ProRater_UserOp, $routeParams, $window, $mdDialog, $mdMenu, $route, $q) {
             console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
