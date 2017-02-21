@@ -93,3 +93,9 @@ One of the page areas is a dialog popup (at the very bottom of that demo templat
 an open-source package called "Angular Material" to provide the nice-looking dialog popup.  Feel free to replace this page
 block with the dialog framework of your choice, but be aware you'll need to "rewire" the dialog popup/closedown UI yourself.
 
+
+# TODO
+
+This document still needs work, including:
+* How to "bootstrap" the Angular system
+* How to turn an existing product / inventory-item page into something that can host Angular-conformant page areas
