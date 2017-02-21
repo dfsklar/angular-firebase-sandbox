@@ -23,7 +23,7 @@ that you would bring into your application.
 
 
 
-angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService'])
+angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService', 'ProRater_UserService'])
 
     .config(function ($routeProvider) {
 

@@ -22,10 +22,10 @@ that you would bring into your application.
                                            */                                  
 
 
-angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService'])
+angular.module('ProRater_Module', ['ngRoute', 'ngMaterial', 'ProRater_UserService'])
 
     .controller('DemoProductListController',
-        function ($scope, $routeParams, $window) {
+        function ($scope, $routeParams, $window, ProRater_UserOp) {
             // This currently just placed in the scope a set of 3 "products" (Broadway shows in this case).
             this.products = {
                 'prod-001': {
@@ -44,12 +44,13 @@ angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRate
 
             $scope.products = this.products;
 
+            $scope.user = ProRater_UserOp.getUserInfo();
+
             // Supports logout.
-            $scope.user = window.logged_in_user;
             $scope.doLogout = function() {
                 Cookies.remove("sklangular_logged_in_user");
                 firebase.auth().signOut().then(function() {
-                    $window.location = ('/angular-firebase-sandbox');
+                    $window.location = ('/');
                     // Sign-out was successful.
                 }, function(error) {
                     $window.alert("Logout failed.");
