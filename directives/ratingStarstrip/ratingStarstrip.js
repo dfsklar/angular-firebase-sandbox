@@ -9,7 +9,7 @@ and then used via:
 */
 
 
-angular.module('Sklangular').directive('ratingStarstrip', function(){
+angular.module('ProRater_Module').directive('ratingStarstrip', function(){
     return {
 
         // To ensure an ngModelController is available so you can call $setViewValue/$render:

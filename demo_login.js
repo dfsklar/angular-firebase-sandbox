@@ -4,7 +4,7 @@ function initApp() {
     logged_in_user = Cookies.getJSON("sklangular_logged_in_user");
     if (logged_in_user) {
         window.logged_in_user = logged_in_user;
-        angular.bootstrap(document, ["Sklangular", "ProRater_DBService"]);
+        angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService"]);
         return;
     }
 
@@ -25,7 +25,7 @@ function initApp() {
         logged_in_user_as_json = JSON.stringify(result.user);
         Cookies.set("sklangular_logged_in_user", result.user, { expires : 10/*days*/ });
         // READY TO START ANGULAR!
-        angular.bootstrap(document, ["Sklangular", "ProRater_DBService"]);
+        angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService"]);
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;

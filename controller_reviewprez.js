@@ -1,78 +1,28 @@
-
-
-
-
-
 /*
+  _____           _____       _            
+ |  __ \         |  __ \     | |           
+ | |__) | __ ___ | |__) |__ _| |_ ___ _ __ 
+ |  ___/ '__/ _ \|  _  // _` | __/ _ \ '__|
+ | |   | | | (_) | | \ \ (_| | ||  __/ |   
+ |_|   |_|  \___/|_|  \_\__,_|\__\___|_|       v1.0
 
-ABOUT THE FIREBASE STRUCTURE:
+ (c) David F. Sklar, 2017
 
-   reviewchunks:
-      {prodID}:
-         {commblockID}:
-              OBJECTcommblock
-   users:
-      {userID}:
-         {prodID}: commblockID
-
-   flags:
-      {userID}:
-         {commblockID}: true   << the value is meaningless.  It is the presence of this value that means it was flagged.
-
-*/
+ License Forthcoming!
 
 
-angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService'])
+ This is the...
+    REVIEW-PRESENTATION CONTROLLER !!
+                                           */                                  
 
-    .value('fbURL', 'https://angularsandbox-640d4.firebaseio.com/')
 
-
-    .config(function ($routeProvider) {
-
-        /*  var resolveProjects = {
-         projects: function (Projects) {
-         return Projects.fetch();
-         }
-         };
-         */
-        /*
-         The use of "resolve" in these route providers establishes a promise that must be resolved before
-         the page will be shown at all.
-         The controller will be given the info, already fetched.  Simple controller!
-         This is an alternative to having a controller that has to go out and fetch the data.
-         (The resolve value must be set to an angular module's ".config" function's variable with that name.)
-
-         BUT: this means the start of page display is delayed, and this may not be acceptable
-         if it is instead desired that a page *portion* be delayed.
-
-         I'm going to try having NO resolve condition for the "list" and instead have the controller
-         do the actual fetching.
-         */
-        $routeProvider
-
-            .when('/product_description/:productID', {
-                // The captured :productID will be sent to the controller via $routeParams
-                // Note that it is REQUIRED that you give an "as" alias to the controller class name!
-                // Will not work if you don't but not sure why.
-                controller: 'ReviewListController as reviewlistCTRLR',
-                templateUrl: 'review_list.html'
-            })
-
-            .when('/product_list', {
-                controller: 'ProductListController as prodlistCTRLR',
-                templateUrl: 'product_list.html'
-            })
-
-            .otherwise({
-                redirectTo: '/product_list'
-            });
-    })
+angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService'])
 
 
 
     // This is a "promise-based" controller that does a fetch (from a db-wrapping service) and waits for
     // the result before setting its this.projects which is being watched by the GUI.
-    .controller('ReviewListController',
+    .controller('ProRater_Controller_ReviewPrez',
         function ($scope, ProRater_DBOp, $firebaseObject, $routeParams, $firebaseArray, $window, $mdDialog, $mdMenu, $route, $q) {
             console.log("inside RLcontroller");
 
@@ -219,45 +169,5 @@ angular.module('Sklangular', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBS
 
             $scope.show_comment_UI = function() {
                 $scope.unsavedwriteableReview.intendsToAddComment = true;
-            };
-        })
-
-
-
-
-
-
-    // This is a good "promissory" controller that does a firebase fetch and waits for
-    // the result before setting its this.projects which is being watched by the GUI.
-    .controller('ProductListController',
-        function ($scope, $routeParams, $window) {
-            // This currently just hardwires 3 products.
-            this.products = {
-                'prod-001': {
-                    id: 'prod-001', label: "Kinky Boots",
-                    image: "http://theaterleague.com/wp-content/uploads/2014/12/kwicks-slider-size-KINKYlogo.gif"
-                },
-                'prod-002': {
-                    id: 'prod-002', label: "The Lion King",
-                    image: 'https://www.ppacri.org/assets/img/thumbnail_lionking-01-105c3f10c0.jpg'
-                },
-                'prod-003': {
-                    id: 'prod-003', label: "Phantom of the Opera",
-                    image: 'http://www.stsonstage.com/uploads/images/catalog_src/the-phantom-of-the-opera_src_1.jpg'
-                }
-            };
-
-            $scope.products = this.products;
-
-            // Supports logout.
-            $scope.user = window.logged_in_user;
-            $scope.doLogout = function() {
-                Cookies.remove("sklangular_logged_in_user");
-                firebase.auth().signOut().then(function() {
-                    $window.location = ('/angular-firebase-sandbox');
-                    // Sign-out was successful.
-                }, function(error) {
-                    $window.alert("Logout failed.");
-                });
             };
         });
