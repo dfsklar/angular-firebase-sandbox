@@ -37,6 +37,21 @@ When you launch the server using BrowserSync, that tool will automatically launc
 
 
 
+## How to incorporate into your app
+
+It is fairly easy to add Angular to any web application -- as long as it is not already using a client-side framework (such as React).  
+
+For this discussion, I assume you are already using Angular... or you are NOT yet using a sophisticated client-side framework for data-binding and page dynamics.
+
+### The required components
+
+Some of the demo's code is composed of files that are relevant only to the Broadway-show demo.  
+You can use those as guides but you don't need to bring them into your code repository.
+
+The files that compose the ProRater engine that you want are:
+
+
+
 
 
 
