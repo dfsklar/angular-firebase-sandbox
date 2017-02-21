@@ -16,8 +16,10 @@ function bootstrapAngular(authenticatedUserData) {
 
 function initApp() {
 
+    var COOKIENAME = "prorater_logged_in_user";
+
     // If cookie present, the user is already logged-in
-    logged_in_user = Cookies.getJSON("sklangular_logged_in_user");
+    logged_in_user = Cookies.getJSON(COOKIENAME);
     if (logged_in_user) {
         bootstrapAngular(logged_in_user);
         return;
@@ -46,7 +48,7 @@ function initApp() {
             }
         };
         // Looks like cookies.set already handles JSON:  logged_in_user_as_json = JSON.stringify(user_metadata);
-        Cookies.set("sklangular_logged_in_user", user_data, { expires : 10/*days*/ });
+        Cookies.set(COOKIENAME, user_data, { expires : 1/*days*/ });
         bootstrapAngular(user_data);
     }).catch(function (error) {
         // Handle Errors here.
