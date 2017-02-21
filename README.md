@@ -48,9 +48,29 @@ For this discussion, I assume you are already using Angular... or you are NOT ye
 Some of the demo's code is composed of files that are relevant only to the Broadway-show demo.  
 You can use those as guides but you don't need to bring them into your code repository.
 
-The files that compose the ProRater engine that you want are:
+The core files -- i.e. the ones you won't need to edit -- that compose the ProRater system are:
+* `controller_reviewprez.js` -- This is the Angular controller that takes care of providing the logic that drives the templates
+  that paint the rating star strips and the list of "commentblocks".
+* `directives/ratingStarstrip/ratingStarstrip.js` -- Code supporting the display of and interaction with the "star strips".
+* `directives/ratingStarstrip/ratingStarstrip.css` -- Styling for the "star strips" (and of course you may want to play with this, but this provides a good start).
 
+### The services
+In addition, you must provide two angular "services" to help the system understand the context:
+* the identity of the user who is viewing the current product / inventory item, and
+* a way to fetch the reviews for this product / inventory item.
 
+#### 1) The user-identity service
+
+If your application already has the concept of "user identity" and authentication, you'll want to create your own variation 
+of the "reference" user service that we've provided in `service_user_firebase.js`.   Your service must support two mandatory endpoints:
+* `setUser(userInfo)`
+* `getUserInfo()`
+
+The `setUser` endpoint should be invoked by your web application to let ProRater know who the current user is.  (You can see sample use of that endpoint in the file `demo_login.js`.)  
+
+The `userInfo` JavaScript Map object must contain two properties:
+* `uid`: this user's unique identifier, a string who semantics need not be understood by ProRater.
+* `meta`: a Map object containing any number of properties that might be useful to the templates you will build to display the "author" information as part of the commentblocks.  In the demo, we're using several basic metadata properties that google's authentication provides, such as name, email, and photo image -- but the set of metadata properties are really up to you.  You just need to make sure to provide any metadata needed for display of the commentblocks.
 
 
 
