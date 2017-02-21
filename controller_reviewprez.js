@@ -156,13 +156,6 @@ angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRate
             $scope.update_review = function() {
                 $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy
                 ProRater_DBOp.updateReview($scope.productID, $scope.key_thisUserReviewOfThisProduct, $scope.writeableReview);
-              /*
-                self.thisUserReviewOfThisProduct.headline = $scope.writeableReview.headline;
-                self.thisUserReviewOfThisProduct.comment = $scope.writeableReview.comment;
-                self.thisUserReviewOfThisProduct.rating = $scope.writeableReview.rating;
-                self.thisUserReviewOfThisProduct.time = Date.now();
-                self.thisUserReviewOfThisProduct.$save();
-                */
                 $mdDialog.hide();
                 $route.reload();
             };
