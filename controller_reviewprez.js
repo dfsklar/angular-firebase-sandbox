@@ -16,7 +16,7 @@
                                            */                                  
 
 
-angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService', 'ProRater_UserService'])
+window.ANGLAPP
 
 
 

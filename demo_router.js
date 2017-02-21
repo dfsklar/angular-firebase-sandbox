@@ -23,7 +23,7 @@ that you would bring into your application.
 
 
 
-angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService', 'ProRater_UserService'])
+window.ANGLAPP
 
     .config(function ($routeProvider) {
 
@@ -50,6 +50,7 @@ angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRate
             .otherwise({
                 redirectTo: '/product_list'
             });
-    })
+    });
+
 
 

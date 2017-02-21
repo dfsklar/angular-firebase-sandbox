@@ -1,13 +1,20 @@
+
+
+
+
+window.ANGLAPP = angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService', 'ProRater_UserService']);
+
 function initApp() {
+
 
     // If cookie present, the user is already logged-in
     logged_in_user = Cookies.getJSON("sklangular_logged_in_user");
     if (logged_in_user) {
         window.logged_in_user = logged_in_user;
-        angular.bootstrap(document, [ "ProRater_DBService", "ProRater_UserService", "ProRater_Module"]);
         angular.module('ProRater_UserService').run(['ProRater_UserOp', function(service) {
             service.setUser(logged_in_user);
         }]);
+        angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService", "ProRater_UserService"]);
         return;
     }
 

@@ -22,7 +22,7 @@ that you would bring into your application.
                                            */                                  
 
 
-angular.module('ProRater_Module', ['ngRoute', 'ngMaterial', 'ProRater_UserService'])
+window.ANGLAPP
 
     .controller('DemoProductListController',
         function ($scope, $routeParams, $window, ProRater_UserOp) {
