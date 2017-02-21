@@ -114,9 +114,7 @@ window.ANGLAPP
                     comment: "",
                     headline: "",
                     rating: -1,
-                    authorName: $scope.user.displayName,
-                    authorEmail: $scope.user.email,
-                    photoURL: $scope.user.photoURL,
+                    meta: $scope.user.meta,
                     uid: $scope.user.uid
                 };
                 $('.review-presentation').css('opacity', '1');

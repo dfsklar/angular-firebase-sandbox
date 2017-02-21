@@ -1,4 +1,4 @@
-<p class="login-panel">Logged in as user: &nbsp; <b>{{user.displayName}}</b> &nbsp; <i>{{user.email}}</i>
+<p class="login-panel">Logged in as user: &nbsp; <b>{{user.meta.authorName}}</b> &nbsp; <i>{{user.meta.authorEmail}}</i>
     &nbsp; &nbsp; &bull; &nbsp;
     <button ng-click="doLogout()">Logout</button>
     <br/>&nbsp;<br/>
@@ -89,8 +89,8 @@ that review (no matter how old) is displayed as the first one along with a CTA t
             <p class="readonly-headline">{{writeableReview.headline | uppercase}}</p>
             <p class="readonly-commentary">{{writeableReview.comment}}</p>
         </td>
-        <td class="commenter-identity"><b>{{writeableReview.authorName}}</b>
-            <br/><i>{{writeableReview.authorEmail}}</i>
+        <td class="commenter-identity"><b>{{writeableReview.meta.authorName}}</b>
+            <br/><i>{{writeableReview.meta.authorEmail}}</i>
             <!-- <br/>{{writeableReview.time | date:'yyyy-MMM-dd'}} -->
             <!-- <br/><img class='photo-of-commenter' width=24 src="{{writeableReview.photoURL}}"/> -->
         </td>
@@ -115,8 +115,8 @@ that review (no matter how old) is displayed as the first one along with a CTA t
             <p ng-if="review.headline.length > 0" class="readonly-headline">{{review.headline | uppercase}}</p>
             <p class="readonly-commentary">{{review.comment | limitTo:1000}}</p>
         </td>
-        <td class="commenter-identity"><b>{{review.authorName}}</b>
-          <br/><i>{{review.authorEmail}}</i>
+        <td class="commenter-identity"><b>{{review.meta.authorName}}</b>
+          <br/><i>{{review.meta.authorEmail}}</i>
           <!--
           <br/>{{review.time | date:'yyyy-MMM-dd'}}
           <br/><img class='photo-of-commenter' width=24 src="{{review.photoURL}}"/> -->

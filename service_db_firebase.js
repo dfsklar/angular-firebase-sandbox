@@ -114,9 +114,7 @@ ABOUT THE FIREBASE STRUCTURE:
                                     headline: x.headline,
                                     rating: x.rating,
                                     time: x.time,
-                                    photoURL: x.photoURL,
-                                    authorName: x.authorName,
-                                    authorEmail: x.authorEmail
+                                    meta: x.meta
                                 };
                                 promise.resolve(RETVAL);
                             }
@@ -198,9 +196,7 @@ ABOUT THE FIREBASE STRUCTURE:
                     headline: data.headline,
                     comment: data.comment,
                     rating: data.rating,
-                    authorName: user.displayName,
-                    authorEmail: user.email,
-                    photoURL: user.photoURL,
+                    meta: user.meta,
                     uid: user.uid,
                     time: data.time
             }).then(function(){

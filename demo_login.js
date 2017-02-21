@@ -4,17 +4,22 @@
 
 window.ANGLAPP = angular.module('ProRater_Module', ['ngRoute', 'firebase', 'ngMaterial', 'ProRater_DBService', 'ProRater_UserService']);
 
-function initApp() {
 
+function bootstrapAngular(authenticatedUserData) {
+    window.logged_in_user = authenticatedUserData;
+    angular.module('ProRater_UserService').run(['ProRater_UserOp', function(service) {
+        service.setUser(authenticatedUserData);
+    }]);
+    angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService", "ProRater_UserService"]);
+}
+
+
+function initApp() {
 
     // If cookie present, the user is already logged-in
     logged_in_user = Cookies.getJSON("sklangular_logged_in_user");
     if (logged_in_user) {
-        window.logged_in_user = logged_in_user;
-        angular.module('ProRater_UserService').run(['ProRater_UserOp', function(service) {
-            service.setUser(logged_in_user);
-        }]);
-        angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService", "ProRater_UserService"]);
+        bootstrapAngular(logged_in_user);
         return;
     }
 
@@ -24,18 +29,25 @@ function initApp() {
             // This gives you a Google Access Token. You can use it to access the Google API.
             var token = result.credential.accessToken;
         } else {
-            console.log("SKLAR - so we're not logged in I guess.");
+            // Firebase is telling us: "nobody is logged in" so we must redirect the user to a google login panel
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithRedirect(provider);
         }
-        // The signed-in user info.
-        console.log(result);
-        // alert(result.user);
-        window.logged_in_user = result.user;
-        logged_in_user_as_json = JSON.stringify(result.user);
-        Cookies.set("sklangular_logged_in_user", result.user, { expires : 10/*days*/ });
-        // READY TO START ANGULAR!
-        angular.bootstrap(document, ["ProRater_Module", "ProRater_DBService", "ProRater_UserService"]);
+
+        // The signed-in user info returned by firebase has many user-identification fields.
+        // For this demo app, we want to isolate just the ones we are interested in for display.
+        // But take note: the field "uid" MUST BE PRESENT -- a requirement of the ProRater system.
+        var user_data = {
+            uid: result.user.uid,  // <<<< MUST BE PRESENT - all other fields must lie inside a 'meta' field
+            meta: {
+                authorName: result.user.displayName,
+                authorEmail: result.user.email,
+                photoURL: result.user.photoURL
+            }
+        };
+        // Looks like cookies.set already handles JSON:  logged_in_user_as_json = JSON.stringify(user_metadata);
+        Cookies.set("sklangular_logged_in_user", user_data, { expires : 10/*days*/ });
+        bootstrapAngular(user_data);
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
