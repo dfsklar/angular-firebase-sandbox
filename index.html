@@ -23,11 +23,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js">
     </script>
 
-    <!-- Angular Material Javascript now available via Google CDN; version 1.0.7 used here -->
+    <!-- Angular Material provides the buttons and popup dialogs -->
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
 
+    <!-- FontAwesome provides icons -->
     <script src="https://use.fontawesome.com/91a781c0eb.js"></script>
 
+    <!-- FirebaseJS wrapped by AngularFire -->
     <script src="https://www.gstatic.com/firebasejs/3.6.6/firebase.js"></script>
     <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
 
@@ -44,12 +46,12 @@
     <!-- Router must be last in this sequence -->
 
 
-    <!-- totally ok to bring in jquery for an angular app -->
+    <!-- totally ok to load jquery in an angular app - they cohabitate well. -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="cookie-plugin.js"></script>
 
 
-    <!-- ng-view simply says: let the template (identified via the router) be placed here. -->
+    <!-- The ng-view attribute simply says: let the template (identified via the router) be expanded here. -->
     <div class="outer" ng-view class="md-padding">
 
     </div>

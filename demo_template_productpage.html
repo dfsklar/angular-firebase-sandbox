@@ -1,3 +1,29 @@
+<!--
+_____           _____       _
+|  __ \         |  __ \     | |
+| |__) | __ ___ | |__) |__ _| |_ ___ _ __
+|  ___/ '__/ _ \|  _  // _` | __/ _ \ '__|
+| |   | | | (_) | | \ \ (_| | ||  __/ |
+|_|   |_|  \___/|_|  \_\__,_|\__\___|_|       v1.0
+
+(c) David F. Sklar, 2017
+
+License Forthcoming!
+
+
+FOR   M I N I N G   PURPOSES
+
+This template fuels the demo product pages.
+
+To integrate the ProRater technology into your own Angular app,
+mine this!  Just...
+Look for the "PAGE AREA" markers below to find portions you can copy into your
+own product / inventory-item template.
+
+-->
+
+
+
 <p class="login-panel">Logged in as user: &nbsp; <b>{{user.meta.authorName}}</b> &nbsp; <i>{{user.meta.authorEmail}}</i>
     &nbsp; &nbsp; &bull; &nbsp;
     <button ng-click="doLogout()">Logout</button>
@@ -151,9 +177,15 @@ that review (no matter how old) is displayed as the first one along with a CTA t
 
 <!-- PAGE AREA:  DIALOG BOX FOR ENDUSER CREATION / REVISING OF COMMENTS -->
 
+<!-- I'm using "Angular Material" (https://material.angularjs.org)
+     for buttons and dialog boxes for the demo.
+     Feel free to replace this with your favorite UI framework.
+  -->
+
+
 
 <script type="text/ng-template" id="dialog1.tmpl.html">
-    <md-dialog aria-label="Mango (Fruit)">
+    <md-dialog>
 <form ng-cloak>
     <md-dialog-content>
         <div class="md-dialog-content" style="text-align:center">
