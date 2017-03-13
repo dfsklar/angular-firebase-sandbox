@@ -6,6 +6,7 @@ body {
 td.commentary {
     padding-right: 60px;
     padding-bottom: 20px;
+    white-space: pre-line;
 }
 
 

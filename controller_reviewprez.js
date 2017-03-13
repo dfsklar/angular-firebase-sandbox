@@ -20,15 +20,12 @@ window.ANGLAPP
 
 
 
-    // This is a "promise-based" controller that does a fetch (from a db-wrapping service) and waits for
-    // the result before setting its this.projects which is being watched by the GUI.
     .controller('ProRater_Controller_ReviewPrez',
         function ($scope, ProRater_DBOp, ProRater_UserOp, $routeParams, $window, $mdDialog, $mdMenu, $route, $q) {
-            console.log("inside RLcontroller");
 
             // These next lines will allow the template to refer to things such as {{productID}}
             $scope.productID = $routeParams.productID;
-            $scope.user = window.logged_in_user;  // This is an object with fields such as uid, etc.
+            $scope.user = ProRater_UserOp.getUserInfo();  // This is an object with fields such as uid, etc.
 
             var self = this;
 
