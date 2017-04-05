@@ -1,6 +1,6 @@
 window.ANGLAPP.controller('lengthyTextCtrl', 
 
-    function($scope) {
+    function($scope, $timeout) {
 
         // These are more like CONSTants configuring the behavior of the engine across all instaces.
         // They are static, never vary between instances/scopes.
@@ -13,19 +13,47 @@ window.ANGLAPP.controller('lengthyTextCtrl',
         $scope.rootElem = null;  // First call to the decide method will record this
 
 
-        $scope.decideOnCondensation = function(elem) {
-            $scope.rootElem = elem;
+        $scope.onLink = function(elem) {
+            $scope.rootElem = elem[0];
+            $timeout(function(){
+                $scope.decideOnCondensation();
+            })
+        }
+
+        $scope.decideOnCondensation = function() {
             if ($scope.userHasRequestedControl) {
                 return;
             }
 
             // Here we use the actual height information to determine whether we want to condense,
             // because the user has not requested control.
+            var $angelem_TextToMeasure = $scope.rootElem.getElementsByClassName('lengthy-text-ngbind');
+            var maxHeight = $scope.maxHeightCommentInLines * 
+                (parseFloat(window.getComputedStyle($angelem_TextToMeasure[0])['line-height']) || self.fallbackGuessedLineHeight);
+            // Must now compute the ACTUAL post-render height of the $angelem_TextToMeasure element.
+            // It turns out: angular's "mini-JQUERY" can't handle it.
+            // I have to resort to jquery here by using $(X) to jquery-ify X:
+            var actualHeight = $($angelem_TextToMeasure).height();
+            $scope.shouldBeCondensed = (actualHeight > maxHeight);
+            /*
+                $scope.shouldBeCondensed = true;
+                                    if ($boundElem.height() > maxHeight) {
+                        $parent.addClass('height-restricted');
+                        $parent.css({maxHeight: maxHeight});
+                    } else {
+                        $parent.css({maxHeight: ""});
+                        $parent.removeClass('height-restricted');
+                    }
+                }
+                */
         };
 
 
-        $scope.getClassForLengthyTextNgbind = function() {
-            return " "
+        $scope.getClassForRootElem = function() {
+            return " lengthy-text " +
+               (
+                   $scope.shouldBeCondensed ? " height-restricted " : " user-controlled-height "
+               );
         };
 
 

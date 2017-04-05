@@ -8,7 +8,7 @@ window.ANGLAPP.directive('lengthyText', function(){
             proseContent: '=ngModel'               
         },
         link: function(scope, elem) {
-            scope.decideOnCondensation(elem);
+            scope.onLink(elem);
         }
     }
 
