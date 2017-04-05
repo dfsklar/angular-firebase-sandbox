@@ -137,10 +137,17 @@ window.ANGLAPP
             $scope.push_review_to_server = function() {
                 $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy
                 $scope.userHasNotYetReviewed = false;  // Do this immediately to lock out ability to submit more than once accidentally.
-                $scope.key_thisUserReviewOfThisProduct = ProRater_DBOp.addReview($scope.productID, $scope.user, $scope.writeableReview);
-                $mdDialog.hide();
+                
+                ProRater_DBOp.addReview($scope.productID, $scope.user, $scope.writeableReview).then(
+                    function(data) {
+                       $scope.key_thisUserReviewOfThisProduct = data;
+                       $mdDialog.hide();
+                    },
+                    function(error) {
+                        console.log(error);
+                    }
+                )
             };
-
 
             $scope.update_review = function() {
                 $scope.writeableReview = jQuery.extend({}, $scope.unsavedwriteableReview);  // shallow copy

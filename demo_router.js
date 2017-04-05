@@ -42,13 +42,18 @@ window.ANGLAPP
                 templateUrl: 'demo_template_productpage.html'
             })
 
+            .when('/demo_lengthy_text', {
+                controller: 'DemoLengthyTextController as CTRLR',
+                templateUrl: 'demo_lengthy_text.html'
+            })
+
             .when('/product_list', {
                 controller: 'DemoProductListController as prodlistCTRLR',
                 templateUrl: 'product_list.html'
             })
 
             .otherwise({
-                redirectTo: '/product_list'
+                redirectTo: '/demo_lengthy_text'
             });
     });
 
