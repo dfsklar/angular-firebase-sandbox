@@ -1,11 +1,10 @@
 window.ANGLAPP.directive('lengthyText', function(){
     return {
 
-        // To ensure an ngModelController is available so you can call $setViewValue/$render:
-        require: '?ngModel',
+        require: 'AE',
         templateUrl: 'directives/lengthyText/lengthyText.html',
         scope: {
-            user: '=ngModel'               
+            proseContent: '=ngModel'               
         }
     }
 
