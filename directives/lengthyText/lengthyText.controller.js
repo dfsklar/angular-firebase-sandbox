@@ -9,6 +9,7 @@ window.ANGLAPP.controller('lengthyTextCtrl',
 
         // These are instance variables, dynamic.
         $scope.shouldBeCondensed = false;
+        $scope.maxHeight = 0;  // Set only if shouldBeCondensed becomes true
         $scope.userHasRequestedControl = false;
         $scope.rootElem = null;  // First call to the decide method will record this
 
@@ -28,13 +29,13 @@ window.ANGLAPP.controller('lengthyTextCtrl',
             // Here we use the actual height information to determine whether we want to condense,
             // because the user has not requested control.
             var $angelem_TextToMeasure = $scope.rootElem.getElementsByClassName('lengthy-text-ngbind');
-            var maxHeight = $scope.maxHeightCommentInLines * 
+            $scope.maxHeight = $scope.maxHeightCommentInLines * 
                 (parseFloat(window.getComputedStyle($angelem_TextToMeasure[0])['line-height']) || self.fallbackGuessedLineHeight);
             // Must now compute the ACTUAL post-render height of the $angelem_TextToMeasure element.
             // It turns out: angular's "mini-JQUERY" can't handle it.
             // I have to resort to jquery here by using $(X) to jquery-ify X:
             var actualHeight = $($angelem_TextToMeasure).height();
-            $scope.shouldBeCondensed = (actualHeight > maxHeight);
+            $scope.shouldBeCondensed = (actualHeight > $scope.maxHeight);
             /*
                 $scope.shouldBeCondensed = true;
                                     if ($boundElem.height() > maxHeight) {
@@ -58,11 +59,12 @@ window.ANGLAPP.controller('lengthyTextCtrl',
 
 
         $scope.getStyleForLengthyTextNgbind = function(index) {
-                var css = {
-                    'color': 'red' 
-                };
-                return css;
-            };
+            var css = {};
+            if ($scope.shouldBeCondensed) {
+                css.height = $scope.maxHeight + 'px';
+            }
+            return css;
+        };
 
 
         $scope.onViewmoreClick = function(elemViewMoreButton) {
