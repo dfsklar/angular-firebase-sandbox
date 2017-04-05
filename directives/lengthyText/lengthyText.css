@@ -1,0 +1,29 @@
+.lengthy-text {
+  position: relative;
+}
+.lengthy-text .lengthy-text-ngbind {
+  white-space: pre-line;
+  hyphens: auto;
+  -ms-hyphens: auto;
+}
+.lengthy-text .view-more {
+  width: 100%;
+  vertical-align: bottom;
+  text-align: right;
+  padding-top: 40px;
+  padding-right: 18px;
+  display: none;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  color: blue;
+  font-style: italic;
+  padding-right: 4px;
+  cursor: pointer;
+}
+.lengthy-text.height-restricted {
+  overflow-y: hidden;
+}
+.lengthy-text.height-restricted .view-more {
+  display: block;
+}

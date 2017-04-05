@@ -1,5 +1,6 @@
-<div class='readonly-commentary'>
-   <div class='readonly-commentary-ngbind' lang="en" ng-bind="proseContent"></div>
+<div class='lengthy-text'>
+      <!-- This next element will have either class "height-restricted" or "user-controlled-height". -->
+   <div class='lengthy-text-ngbind' ng-style="getStyleForLengthyTextNgbind()" lang="en" ng-bind="proseContent"></div>
    <div class='view-more' onclick="window.proraterLengthyCommentService_onViewmoreClick(this);">
       ... See more
       </div></div>
