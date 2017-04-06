@@ -21,6 +21,7 @@ window.ANGLAPP.controller('lengthyTextCtrl',
             })
         }
 
+
         $scope.decideOnCondensation = function() {
             if ($scope.userHasRequestedControl) {
                 return;
@@ -31,22 +32,13 @@ window.ANGLAPP.controller('lengthyTextCtrl',
             var $angelem_TextToMeasure = $scope.rootElem.getElementsByClassName('lengthy-text-ngbind');
             $scope.maxHeight = $scope.maxHeightCommentInLines * 
                 (parseFloat(window.getComputedStyle($angelem_TextToMeasure[0])['line-height']) || self.fallbackGuessedLineHeight);
+
             // Must now compute the ACTUAL post-render height of the $angelem_TextToMeasure element.
-            // It turns out: angular's "mini-JQUERY" can't handle it.
+            // As far as I can tell, after several failed attempts, it appears that
+            // angular's "mini-JQUERY" can't handle obtaining the real height.
             // I have to resort to jquery here by using $(X) to jquery-ify X:
             var actualHeight = $($angelem_TextToMeasure).height();
             $scope.shouldBeCondensed = (actualHeight > $scope.maxHeight);
-            /*
-                $scope.shouldBeCondensed = true;
-                                    if ($boundElem.height() > maxHeight) {
-                        $parent.addClass('height-restricted');
-                        $parent.css({maxHeight: maxHeight});
-                    } else {
-                        $parent.css({maxHeight: ""});
-                        $parent.removeClass('height-restricted');
-                    }
-                }
-                */
         };
 
 
@@ -67,12 +59,10 @@ window.ANGLAPP.controller('lengthyTextCtrl',
         };
 
 
-        $scope.onViewmoreClick = function(elemViewMoreButton) {
-            $(elemViewMoreButton).parent()
-                .css({maxHeight: ""})
-                .addClass('user-controlled-height')
-                .removeClass('height-restricted');
+        $scope.onViewMore = function(elemViewMoreButton) {
+            $scope.shouldBeCondensed = false;
         };
+
 
         $scope.scanForLengthyComments = function() {
             var self = this;
@@ -94,5 +84,3 @@ window.ANGLAPP.controller('lengthyTextCtrl',
     }
 
 );
-
-

@@ -2,6 +2,6 @@
 <div class='lengthy-text' ng-class='getClassForRootElem()' >
    <div class="lengthy-text-ngbind"
         ng-style="getStyleForLengthyTextNgbind()" lang="en" ng-bind="proseContent"></div>
-   <div class='view-more' onclick="window.proraterLengthyCommentService_onViewmoreClick(this);">
+   <div class='view-more' ng-click="onViewMore()">
       ... See more
       </div></div>

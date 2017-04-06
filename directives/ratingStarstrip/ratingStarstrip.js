@@ -67,6 +67,7 @@ window.ANGLAPP.directive('ratingStarstrip', function(){
                 return iconBase + ' ' + (index >= scope.value ? iconEmpty : iconFull);
             };
 
+
             /**
              * Returns the appropriate style for the icon's color.
              * Changes if it's meant to be full or empty.
