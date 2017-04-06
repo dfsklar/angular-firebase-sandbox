@@ -1,7 +1,9 @@
-<!-- This root element will have either class "height-restricted" or "user-controlled-height". -->
+<!-- This root element will be dynamically given a 2nd class ("height-restricted")
+     if the controller makes the decision to "ellipsize" the text due to its
+     length. -->
 <div class='lengthy-text' ng-class='getClassForRootElem()' >
    <div class="lengthy-text-ngbind"
         ng-style="getStyleForLengthyTextNgbind()" lang="en" ng-bind="proseContent"></div>
    <div class='view-more' ng-click="onViewMore()">
-      ... See more
+      ... Show the rest of the comment.
       </div></div>
